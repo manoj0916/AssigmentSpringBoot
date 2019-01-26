@@ -24,14 +24,14 @@ public class ProductControllerTests {
     @Test
     public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
 
-        this.mockMvc.perform(get("/products")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/productsWithReducedPrice")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").value("products"));
     }
 
     @Test
     public void paramGreetingShouldReturnTailoredMessage() throws Exception {
 
-        this.mockMvc.perform(get("/products").param("labelType", "ShowWasNow"))
+        this.mockMvc.perform(get("/productsWithReducedPrice").param("labelType", "ShowWasNow"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").value("products"));
     }

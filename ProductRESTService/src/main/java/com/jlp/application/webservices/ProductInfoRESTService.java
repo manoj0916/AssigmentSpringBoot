@@ -19,7 +19,7 @@ public class ProductInfoRESTService {
 	@Resource(name="productInfoFacade")
 	ProductInfoFacade productInfoFacade;
 	
-    @RequestMapping("/products")
+    @RequestMapping("/productsWithReducedPrice")
     public Products getProducts(@RequestParam(value="labelType", defaultValue="ShowWasNow") String labelType) {
     	
         return productInfoFacade.getReducedPriceProductsByLabelType(labelType);

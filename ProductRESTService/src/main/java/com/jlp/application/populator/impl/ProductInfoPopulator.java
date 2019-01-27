@@ -102,7 +102,6 @@ public class ProductInfoPopulator implements Populator<ProductInfoDTO, Products>
 		String currency = productServiceUtil.getCurrencySymbol(currencyMap, priceDTO.getCurrency());
 		
 		prepareFinalPriceLabel(filteredPriceLabelList,currency,priceDTO, product);
-		
 	}
 	
 	private boolean labelFilter(String priceLabel, String labelType)

@@ -19,7 +19,7 @@ public class DefaultProductInfoService implements ProductInfoService {
 	@Override
 	public ProductInfoDTO getProductsByCategory(String labelType) {
 		
-		log.debug("::::::::::::::::Inside getReducedPriceProductsByLabelType :::::::::::::::");
+		log.debug("::::::::::::::::Inside getProductsByCategory :::::::::::::::");
 		
 		ProductInfoDTO productInfoDTO = webClientService.getProductResultFromService();
 		productInfoDTO.setLabelType(labelType);

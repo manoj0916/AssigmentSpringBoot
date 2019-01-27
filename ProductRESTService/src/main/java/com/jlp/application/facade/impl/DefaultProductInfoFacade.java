@@ -1,8 +1,6 @@
 package com.jlp.application.facade.impl;
 
 
-import javax.annotation.Resource;
-
 import org.jboss.logging.Logger;
 
 import com.jlp.application.convertor.Converter;
@@ -16,20 +14,34 @@ import com.jlp.application.services.ProductInfoService;
  */
 public class DefaultProductInfoFacade implements ProductInfoFacade {
 	
-	Logger log = Logger.getLogger(DefaultProductInfoFacade.class);
+	private Logger log = Logger.getLogger(DefaultProductInfoFacade.class);
 	
-	@Resource(name="productInfoService")
-	ProductInfoService productInfoService;
+	private ProductInfoService productInfoService;
 	
-	@Resource(name="productConvertor")
-	Converter<ProductInfoDTO,Products> productConvertor;
+	private Converter<ProductInfoDTO,Products> productConvertor;
 	
 	@Override
 	public Products getReducedPriceProductsByLabelType(String labelType) {
 		
 		log.debug(":::::::::::::::Inside getReducedPriceProductsByLabelType :::::::::::::::::");
 		
-		return productConvertor.convert(productInfoService.getReducedPriceProductsByLabelType(labelType));
+		return productConvertor.convert(productInfoService.getProductsByCategory(labelType));
+	}
+	
+	public ProductInfoService getProductInfoService() {
+		return productInfoService;
+	}
+
+	public void setProductInfoService(ProductInfoService productInfoService) {
+		this.productInfoService = productInfoService;
+	}
+
+	public Converter<ProductInfoDTO, Products> getProductConvertor() {
+		return productConvertor;
+	}
+
+	public void setProductConvertor(Converter<ProductInfoDTO, Products> productConvertor) {
+		this.productConvertor = productConvertor;
 	}
 
 }

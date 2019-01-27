@@ -11,12 +11,16 @@
 	 <context:component-scan base-package="com.jlp.application"/>
 
 	<bean id="productInfoFacade" class="com.jlp.application.facade.impl.DefaultProductInfoFacade">
+		<property name="productInfoService" ref="productInfoService"/>
+		<property name="productConvertor" ref="productConvertor"/>
 	</bean>
 
 	<bean id="productInfoService" class="com.jlp.application.services.impl.DefaultProductInfoService">
+		<property name="webClientService" ref="webClientService"/>
 	</bean>
 	
 	<bean id="webClientService" class="com.jlp.application.services.impl.DefaultWebClientService">
+		<property name="apiURL" value="${products.source.api.url}"/>
 	</bean>
 	
 	<bean id="productConvertor" class="com.jlp.application.convertor.impl.ProductInfoConvertor">
@@ -25,10 +29,13 @@
 	</bean>
 	
 	<bean id="productInfoPopulator" class="com.jlp.application.populator.impl.ProductInfoPopulator">
+		<property name="colorRGBMap" ref="colorRGBMap"/>
+		<property name="currencyMap" ref="currencyMap"/>
+		<property name="productServiceUtil" ref="productServiceUtil"/>
+		<property name="priceLabels" value="${product.price.labels}"/>
 	</bean>
 	
-	<bean id="productServiceUtil" class="com.jlp.application.util.ProductServiceUtil">
-	</bean>
+	<bean id="productServiceUtil" class="com.jlp.application.util.ProductServiceUtil"/>
 	
 	<util:map id="colorRGBMap">
         <entry key="BLACK" value="000000"/>

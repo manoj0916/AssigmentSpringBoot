@@ -8,6 +8,7 @@ public class ApplicationConstant {
 	private ApplicationConstant(){}
 	
 	public static final String BLANK="";
+	public static final String SPACE=" ";
 	public static final String COMMA=",";
 	public static final String PERCENT="%";
 	public static final String TOVALUE="to";
@@ -19,9 +20,9 @@ public class ApplicationConstant {
 	public static final String NOWVALUEPATTERN="now";
 	public static final String THENVALUEPATTERN="then";
 	
+	public static final String SHOWNOWLABEL="ShowWasNow";
+	public static final String SHOWTHENLABEL="ShowWasThenNow";
 	public static final String PERCENTLABEL="ShowPercDiscount";
-	
-	public static final String[] PRICELABELLIST = new String[]{"Was ", " then ", " now ", "% off - now "};
 	
 	public static final double COMPAREVALUE=10;
 

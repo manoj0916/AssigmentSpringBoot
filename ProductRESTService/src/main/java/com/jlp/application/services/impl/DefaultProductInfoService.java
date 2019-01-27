@@ -1,8 +1,6 @@
 package com.jlp.application.services.impl;
 
 
-import javax.annotation.Resource;
-
 import org.jboss.logging.Logger;
 
 import com.jlp.application.dto.ProductInfoDTO;
@@ -14,21 +12,26 @@ import com.jlp.application.services.WebClientService;
  */
 public class DefaultProductInfoService implements ProductInfoService {
 
-	Logger log = Logger.getLogger(DefaultProductInfoService.class);
+	private Logger log = Logger.getLogger(DefaultProductInfoService.class);
 	
-	@Resource(name="webClientService")
-	WebClientService webClientService;
-	
-	
-	
+	private WebClientService webClientService;
+
 	@Override
-	public ProductInfoDTO getReducedPriceProductsByLabelType(String labelType) {
+	public ProductInfoDTO getProductsByCategory(String labelType) {
 		
 		log.debug("::::::::::::::::Inside getReducedPriceProductsByLabelType :::::::::::::::");
 		
 		ProductInfoDTO productInfoDTO = webClientService.getProductResultFromService();
 		productInfoDTO.setLabelType(labelType);
 		return productInfoDTO;
+	}
+	
+	public WebClientService getWebClientService() {
+		return webClientService;
+	}
+
+	public void setWebClientService(WebClientService webClientService) {
+		this.webClientService = webClientService;
 	}
 
 }

@@ -7,6 +7,6 @@ import com.jlp.application.dto.ProductInfoDTO;
  */
 public interface ProductInfoService {
 	
-	ProductInfoDTO getReducedPriceProductsByLabelType(String labelType);
+	ProductInfoDTO getProductsByCategory(String labelType);
 
 }

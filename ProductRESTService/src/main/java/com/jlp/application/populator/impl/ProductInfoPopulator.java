@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
-
 import org.jboss.logging.Logger;
 import org.springframework.util.StringUtils;
 
@@ -30,28 +28,29 @@ import com.jlp.application.util.ProductServiceUtil;
  */
 public class ProductInfoPopulator implements Populator<ProductInfoDTO, Products> {
 	
-	Logger log = Logger.getLogger(ProductInfoPopulator.class);
+	private Logger log = Logger.getLogger(ProductInfoPopulator.class);
 	
-	@Resource(name="colorRGBMap")
-	Map<String, String> colorRGBMap;
+	private Map<String, String> colorRGBMap;
 	
-	@Resource(name="currencyMap")
-	Map<String, String> currencyMap;
+	private Map<String, String> currencyMap;
 	
-	@Resource(name="productServiceUtil")
-	ProductServiceUtil productServiceUtil;
+	private ProductServiceUtil productServiceUtil;
 	
-	LinkedList<String> priceLabelList = new LinkedList <> (Arrays.asList(ApplicationConstant.PRICELABELLIST));
+	private String[] priceLabels;
+
+	private LinkedList<String> priceLabelList;
 
 	@Override
 	public void populate(ProductInfoDTO source, Products target) {
+		
+		priceLabelList = new LinkedList <> (Arrays.asList(getPriceLabels()));
 
 		List<ProductDTO> productDTOs = source.getProducts();
-		
+		//Filter products with reduced price.
 		List<ProductDTO> fileredproductDTOs = productDTOs.stream().filter(productdto -> reductionFilter(productdto)).collect(Collectors.toList());
 		
 		log.debug("::::::::::::::: Populate filterd "+fileredproductDTOs.size()+" products out of "+source.getProducts().size()+" products :::::::::::::::");
-
+		//Sort products with highest reduced price.
 		Collections.sort(fileredproductDTOs, (productDTO0, productDTO1) -> comparePriceReduction(productDTO0,productDTO1));
 		
 		fileredproductDTOs.forEach(productDTO -> {
@@ -108,7 +107,7 @@ public class ProductInfoPopulator implements Populator<ProductInfoDTO, Products>
 	
 	private boolean labelFilter(String priceLabel, String labelType)
 	{
-		return labelType.toLowerCase().contains(priceLabel.toLowerCase().trim()) || (ApplicationConstant.PERCENTLABEL.equals(labelType) && priceLabel.contains(ApplicationConstant.PERCENT));
+		return ((ApplicationConstant.SHOWNOWLABEL.equals(labelType) || ApplicationConstant.SHOWTHENLABEL.equals(labelType)) && labelType.toLowerCase().contains(priceLabel.toLowerCase().trim())) || (ApplicationConstant.PERCENTLABEL.equals(labelType) && priceLabel.contains(ApplicationConstant.PERCENT));
 	}
 	
 	private void prepareFinalPriceLabel(List<String> filteredPriceLabelList, String currency,PriceDTO priceDTO, Product product)
@@ -120,18 +119,28 @@ public class ProductInfoPopulator implements Populator<ProductInfoDTO, Products>
 			if(priceLabel.contains(ApplicationConstant.WASVALUEPATTERN))
 			{
 				resultPriceLabelList.add(priceLabel);
-				resultPriceLabelList.add(currency+productServiceUtil.getDecimalValue(priceDTO.getWas())+ ApplicationConstant.COMMA);
+				resultPriceLabelList.add(ApplicationConstant.SPACE);
+				resultPriceLabelList.add(currency);
+				resultPriceLabelList.add(productServiceUtil.getDecimalValue(priceDTO.getWas()));
+				resultPriceLabelList.add(ApplicationConstant.COMMA);
 			}else if(priceLabel.contains(ApplicationConstant.THENVALUEPATTERN) && (!StringUtils.isEmpty(priceDTO.getThen1()) || !StringUtils.isEmpty(priceDTO.getThen2())))
 			{
+				resultPriceLabelList.add(ApplicationConstant.SPACE);
 				resultPriceLabelList.add(priceLabel);
-				resultPriceLabelList.add(currency+productServiceUtil.getDecimalValue(StringUtils.isEmpty(priceDTO.getThen1())?priceDTO.getThen2():priceDTO.getThen1())+ ApplicationConstant.COMMA);
+				resultPriceLabelList.add(ApplicationConstant.SPACE);
+				resultPriceLabelList.add(currency);
+				resultPriceLabelList.add(productServiceUtil.getDecimalValue(StringUtils.isEmpty(priceDTO.getThen1())?priceDTO.getThen2():priceDTO.getThen1()));
+				resultPriceLabelList.add(ApplicationConstant.COMMA);
 			}else if(priceLabel.contains(ApplicationConstant.PERCENT))
 			{
 				identity.append(productServiceUtil.getDecimalValue(productServiceUtil.calculatePercent(productServiceUtil.getDoubleValue(priceDTO.getWas()), productServiceUtil.getDoubleValue(productServiceUtil.getNowPrice(priceDTO.getNow()))).toString()));
 				resultPriceLabelList.add(priceLabel);
+				resultPriceLabelList.add(ApplicationConstant.SPACE);
 			}else if(priceLabel.contains(ApplicationConstant.NOWVALUEPATTERN))
 			{
+				resultPriceLabelList.add(ApplicationConstant.SPACE);
 				resultPriceLabelList.add(priceLabel);
+				resultPriceLabelList.add(ApplicationConstant.SPACE);
 			}
 		});
 		if(!resultPriceLabelList.isEmpty())
@@ -139,5 +148,37 @@ public class ProductInfoPopulator implements Populator<ProductInfoDTO, Products>
 			resultPriceLabelList.add(product.getNowPrice());
 		}
 		product.setPriceLabel(resultPriceLabelList.stream().reduce(identity.toString(), (a,b) -> a + b));
+	}
+	
+	public Map<String, String> getColorRGBMap() {
+		return colorRGBMap;
+	}
+
+	public void setColorRGBMap(Map<String, String> colorRGBMap) {
+		this.colorRGBMap = colorRGBMap;
+	}
+
+	public Map<String, String> getCurrencyMap() {
+		return currencyMap;
+	}
+
+	public void setCurrencyMap(Map<String, String> currencyMap) {
+		this.currencyMap = currencyMap;
+	}
+
+	public ProductServiceUtil getProductServiceUtil() {
+		return productServiceUtil;
+	}
+
+	public void setProductServiceUtil(ProductServiceUtil productServiceUtil) {
+		this.productServiceUtil = productServiceUtil;
+	}
+
+	public String[] getPriceLabels() {
+		return priceLabels;
+	}
+
+	public void setPriceLabels(String[] priceLabels) {
+		this.priceLabels = priceLabels;
 	}
 }

@@ -40,7 +40,7 @@ public class DefaultProductInfoService implements ProductInfoService {
 
 		log.debug(":::::::::::::::Inside getProductsByCategory :::::::::::::::::(" + categoryId + ")");
 
-		List<ProductDTO> productDTOs = webClientService.getProductListForCategory(categoryId).getProducts();
+		List<ProductDTO> productDTOs = this.getProductsByCategory(categoryId);
 		// Filter products with reduced price.
 		List<ProductDTO> fileredproductDTOs = productDTOs.stream().filter(productdto -> reductionFilter(productdto))
 				.collect(Collectors.toList());
@@ -52,6 +52,17 @@ public class DefaultProductInfoService implements ProductInfoService {
 				(productDTO0, productDTO1) -> comparePriceReduction(productDTO0, productDTO1));
 
 		return fileredproductDTOs;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.jlp.application.services.ProductInfoService#getProductsByCategory(java.lang.String)
+	 * 
+	 * This method returns product list for the specified category.
+	 * 
+	 */
+	@Override
+	public List<ProductDTO> getProductsByCategory(String categoryId) {
+		return webClientService.getProductListForCategory(categoryId).getProducts();
 	}
 
 	private boolean reductionFilter(ProductDTO productdto) {
@@ -72,5 +83,6 @@ public class DefaultProductInfoService implements ProductInfoService {
 	public void setProductServiceUtil(ProductServiceUtil productServiceUtil) {
 		this.productServiceUtil = productServiceUtil;
 	}
+
 
 }

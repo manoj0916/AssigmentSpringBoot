@@ -12,6 +12,8 @@ import com.jlp.application.dto.ProductDTO;
  */
 public interface ProductInfoService {
 	
+	List<ProductDTO> getProductsByCategory(String categoryId);
+	
 	List<ProductDTO> getSortedPriceReducedProductsByCategory(String categoryId);
 
 }

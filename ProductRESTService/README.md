@@ -50,7 +50,7 @@ To run the Spring boot for Product API please follow below steps.
     
     Execute command 'mvnw install'
     
-    Execute command 'spring-boot:run'
+    Execute command 'mvnw spring-boot:run'
 
     
 Above should start the application on embedded Tomcat server @ localhost, port: 8080, with sample console messages like below

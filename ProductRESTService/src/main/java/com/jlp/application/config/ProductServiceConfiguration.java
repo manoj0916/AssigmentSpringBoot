@@ -6,6 +6,9 @@ import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author Manoj
+ * 
+ * Spring configuration class to related configuration for Spring Boot.
+ * 
  */
 
 @Configuration

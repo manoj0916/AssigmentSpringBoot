@@ -13,6 +13,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author Manoj
+ * 
+ * Default implementation for web client service.
+ * 
  */
 public class DefaultWebClientService implements WebClientService {
 
@@ -32,6 +35,11 @@ public class DefaultWebClientService implements WebClientService {
 		this.apiBaseURL = apiBaseURL;
 	}
 
+	/**
+	 * @param okHttpClient
+	 * @param params
+	 * Constructor which set connect & read timeout to okHttpClient.
+	 */
 	public DefaultWebClientService(OkHttpClient okHttpClient, String[] params) {
 		super();
 		okHttpClient.newBuilder().connectTimeout(Duration.ofMillis(Long.parseLong(params[0])))

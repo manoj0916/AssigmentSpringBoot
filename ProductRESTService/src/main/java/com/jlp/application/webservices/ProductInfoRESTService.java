@@ -12,6 +12,9 @@ import com.jlp.application.facade.ProductInfoFacade;
 
 /**
  * @author Manoj
+ * 
+ * RESTful service controller which can be used to get sorted reduced product list for a category.
+ * 
  */
 
 @RestController

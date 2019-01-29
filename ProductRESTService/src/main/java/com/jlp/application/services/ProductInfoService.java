@@ -6,6 +6,9 @@ import com.jlp.application.dto.ProductDTO;
 
 /**
  * @author Manoj
+ * 
+ * Interface for Product Information service.
+ * 
  */
 public interface ProductInfoService {
 	

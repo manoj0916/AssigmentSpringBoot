@@ -14,6 +14,9 @@ import com.jlp.application.util.ProductServiceUtil;
 
 /**
  * @author Manoj
+ * 
+ * Default implementation for product information service.
+ * 
  */
 public class DefaultProductInfoService implements ProductInfoService {
 
@@ -57,8 +60,8 @@ public class DefaultProductInfoService implements ProductInfoService {
 	}
 
 	private int comparePriceReduction(ProductDTO productDTO0, ProductDTO productDTO1) {
-		return productServiceUtil.substractValues(productDTO1.getPrice().getWas(), productDTO1.getPrice().getNow())
-				.compareTo(productServiceUtil.substractValues(productDTO0.getPrice().getWas(),
+		return productServiceUtil.subtractValues(productDTO1.getPrice().getWas(), productDTO1.getPrice().getNow())
+				.compareTo(productServiceUtil.subtractValues(productDTO0.getPrice().getWas(),
 						productDTO0.getPrice().getNow()));
 	}
 

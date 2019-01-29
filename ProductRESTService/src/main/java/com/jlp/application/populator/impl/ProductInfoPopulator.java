@@ -20,6 +20,7 @@ import com.jlp.application.util.ProductServiceUtil;
 
 /**
  * @author Manoj
+ * Populator which will populate list of products from DTOs received from service.
  */
 public class ProductInfoPopulator implements Populator<List<ProductDTO>, Products> {
 
@@ -29,13 +30,13 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 
 	private ProductServiceUtil productServiceUtil;
 
-	private String[] parms;
-
+	/* (non-Javadoc)
+	 * @see com.jlp.application.populator.Populator#populate(java.lang.Object, java.lang.Object, java.lang.String[])
+	 * Generic populator to populate target from source.
+	 */
 	@Override
 	public void populate(List<ProductDTO> source, Products target, String... parms) {
 
-		this.parms = parms == null ? new String[] {ApplicationConstant.SHOWWASNOWLABEL} :parms ;
-		
 		log.debug("Data population starts for " + source.size() + " products");
 		source.forEach(productDTO -> {
 			Product productInfo = new Product();
@@ -43,12 +44,18 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 			productInfo.setTitle(productDTO.getTitle());
 			populateColorSwatches(productDTO.getColorSwatches(), productInfo);
 			populatePrice(productDTO.getPrice(), productInfo);
-			populatePriceLabel(productDTO.getPrice(), productInfo);
+			populatePriceLabel(productDTO.getPrice(), productInfo,parms == null ? new String[] {ApplicationConstant.SHOWWASNOWLABEL} :parms);
 			target.getProducts().add(productInfo);
 		});
 
 	}
 
+	/**
+	 * Populate ColorSwatches to target from source.
+	 * 
+	 * @param colorSwatches
+	 * @param product
+	 */
 	private void populateColorSwatches(List<ColorSwatcheDTO> colorSwatches, Product product) {
 		colorSwatches.forEach(colorSwatcheDTO -> {
 			ColorSwatche colorSwatche = new ColorSwatche();
@@ -60,18 +67,30 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 		});
 	}
 
+	/**
+	 * Populate Now price for the product.
+	 * @param priceDTO
+	 * @param product
+	 */
 	private void populatePrice(PriceDTO priceDTO, Product product) {
 
 		product.setNowPrice(productServiceUtil.getPriceWithCurrency(priceDTO.getNow(), priceDTO.getCurrency()));
 	}
 
-	private void populatePriceLabel(PriceDTO priceDTO, Product product) {
+	/**
+	 * Populate price label for the target as per passed params when requested.
+	 * 
+	 * @param priceDTO
+	 * @param product
+	 * @param params
+	 */
+	private void populatePriceLabel(PriceDTO priceDTO, Product product, String[] params) {
 
 		List<Object> priceList = new LinkedList<>();
 
 		String messageLabelCode = ApplicationConstant.SHOWWASNOWMESSAGELABEL;
 
-		if (this.parms[0].equals(ApplicationConstant.SHWOPERCENTDISCLABEL)) {
+		if (params[0].equals(ApplicationConstant.SHWOPERCENTDISCLABEL)) {
 			priceList.add(productServiceUtil
 					.getPercentValue(productServiceUtil.calculatePercent(priceDTO.getWas(), priceDTO.getNow())));
 			messageLabelCode = ApplicationConstant.SHWOPERCENTDISCMESSAGELABEL;
@@ -79,7 +98,7 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 			priceList.add(productServiceUtil.getPriceWithCurrency(priceDTO.getWas(), priceDTO.getCurrency()));
 		}
 
-		if (this.parms[0].equals(ApplicationConstant.SHOWWASTHENLABEL)
+		if (params[0].equals(ApplicationConstant.SHOWWASTHENLABEL)
 				&& (!StringUtils.isEmpty(priceDTO.getThen1()) || !StringUtils.isEmpty(priceDTO.getThen2()))) {
 			priceList.add(productServiceUtil.getPriceWithCurrency(
 					StringUtils.isEmpty(priceDTO.getThen1()) ? priceDTO.getThen2() : priceDTO.getThen1(),
@@ -94,10 +113,16 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 		product.setPriceLabel(productServiceUtil.getTextMessage(messageLabelCode, priceList));
 	}
 
+	/**
+	 * @param colorRGBMap
+	 */
 	public void setColorRGBMap(Map<String, String> colorRGBMap) {
 		this.colorRGBMap = colorRGBMap;
 	}
 
+	/**
+	 * @param productServiceUtil
+	 */
 	public void setProductServiceUtil(ProductServiceUtil productServiceUtil) {
 		this.productServiceUtil = productServiceUtil;
 	}

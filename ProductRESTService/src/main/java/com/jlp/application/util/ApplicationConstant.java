@@ -2,6 +2,9 @@ package com.jlp.application.util;
 
 /**
  * @author Manoj
+ * 
+ * All application level constants defined here.
+ * 
  */
 public class ApplicationConstant {
 

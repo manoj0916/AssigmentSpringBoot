@@ -2,6 +2,8 @@ package com.jlp.application.populator;
 
 /**
  * @author Manoj
+ * 
+ * Generic interface for populator.
  */
 public interface Populator<SOURCE, TARGET> {
 

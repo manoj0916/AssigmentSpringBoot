@@ -2,6 +2,10 @@ package com.jlp.application.convertor.impl;
 
 /**
  * @author Manoj
+ * 
+ * Generic convertor, can be used for data population of any <SOURCE, TARGET>.
+ * The source & target would be defined implemented classes.
+ * 
  */
 import com.jlp.application.convertor.Converter;
 import com.jlp.application.exception.ConversionException;

@@ -21,6 +21,12 @@ public class DefaultProductInfoFacade implements ProductInfoFacade {
 
 	private Converter<List<ProductDTO>, Products> productConvertor;
 
+	/* (non-Javadoc)
+	 * @see com.jlp.application.facade.ProductInfoFacade#getReducedPriceProductsByCategory(java.lang.String, java.lang.String)
+	 *
+	 * Facade method to get product DTO calling service & convert to final Product POJO using generic populator/converter.
+	 * 
+	 */
 	@Override
 	public Products getReducedPriceProductsByCategory(String categoryId, String labelType) {
 

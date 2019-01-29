@@ -19,7 +19,9 @@ import com.jlp.application.util.ApplicationConstant;
 import com.jlp.application.util.ProductServiceUtil;
 
 /**
- * @author Manoj Populator which will populate list of products from DTOs
+ * @author Manoj 
+ * 
+ * Populator which will populate list of products from DTOs
  *         received from service.
  */
 public class ProductInfoPopulator implements Populator<List<ProductDTO>, Products> {

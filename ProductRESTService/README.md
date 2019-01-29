@@ -8,13 +8,20 @@ Get formatted list of discounted products under a Category sorted as "highest pr
 ## Design for the project
  	We used J2EE design patterns such as facade, service etc. to implement the project. It has the structure as below:
  	
- 			View Layer (REST call in this case)
- 							|
- 							V
- 			Facade Layer (Facade classes to make sure abstract function available for omni channels & re-usability) <-> convertor/populator (Generic populator to populate final data model from DTO)
- 							|
- 							V
- 			Service Layer (Provide facilitation the concept of re-usability of service across enterprise)
+		View Layer (REST call in this case)
+						|
+						V
+		Facade Layer (Facade classes to make sure abstract function available for omni channels & re-usability) <-> convertor/populator (Generic populator to populate final data model from DTO)
+						|
+						V
+		Service Layer (Provide facilitation the concept of re-usability of service across enterprise)
+ 			
+## Control flow
+
+	Request <-> ProductInfoRESTService <-> ProductInfoFacade <-> ProductInfoService <-> Service call via OkHttp3 (Retrofit)
+												|
+												V
+								ProductInfoPopulator (via generic convertor)
 
 ## For Creating Eclipse (with Spring tool Suite 3 plugin) OR Spring tool Suite (STS) IDE project
 

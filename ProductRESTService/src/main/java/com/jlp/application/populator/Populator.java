@@ -5,6 +5,6 @@ package com.jlp.application.populator;
  */
 public interface Populator<SOURCE, TARGET> {
 
-	void populate(SOURCE source, TARGET target);
+	void populate(SOURCE source, TARGET target, String... parms);
 	
 }

@@ -1,16 +1,11 @@
 package com.jlp.application.populator.impl;
 
-
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
 import org.jboss.logging.Logger;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceResolvable;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.util.StringUtils;
 
 import com.jlp.application.data.ColorSwatche;
@@ -27,85 +22,76 @@ import com.jlp.application.util.ProductServiceUtil;
  * @author Manoj
  */
 public class ProductInfoPopulator implements Populator<List<ProductDTO>, Products> {
-	
+
 	private Logger log = Logger.getLogger(ProductInfoPopulator.class);
-	
+
 	private Map<String, String> colorRGBMap;
-	
+
 	private ProductServiceUtil productServiceUtil;
-	
-	private Map<String, String> priceLabelMap;
-	
-	private MessageSource messageSource;
-	
+
+	private String[] parms;
+
 	@Override
-	public void populate(List<ProductDTO> source, Products target) {
+	public void populate(List<ProductDTO> source, Products target, String... parms) {
+
+		this.parms = parms == null ? new String[] {ApplicationConstant.SHOWWASNOWLABEL} :parms ;
 		
-		log.debug("Data population starts for "+source.size()+" products");
-		
+		log.debug("Data population starts for " + source.size() + " products");
 		source.forEach(productDTO -> {
 			Product productInfo = new Product();
 			productInfo.setProductId(productDTO.getProductId());
 			productInfo.setTitle(productDTO.getTitle());
-			populateColorSwatches(productDTO.getColorSwatches(),productInfo);
-			populatePrice(productDTO.getPrice(),productInfo);
-			populatePriceLabel(productDTO.getPrice(),productInfo);
+			populateColorSwatches(productDTO.getColorSwatches(), productInfo);
+			populatePrice(productDTO.getPrice(), productInfo);
+			populatePriceLabel(productDTO.getPrice(), productInfo);
 			target.getProducts().add(productInfo);
 		});
-		
+
 	}
-	
-	private void populateColorSwatches(List<ColorSwatcheDTO> colorSwatches, Product product)
-	{
-		colorSwatches.forEach(colorSwatcheDTO ->
-		{
-			ColorSwatche colorSwatche=new ColorSwatche();
+
+	private void populateColorSwatches(List<ColorSwatcheDTO> colorSwatches, Product product) {
+		colorSwatches.forEach(colorSwatcheDTO -> {
+			ColorSwatche colorSwatche = new ColorSwatche();
 			colorSwatche.setColor(colorSwatcheDTO.getColor());
 			colorSwatche.setSkuid(colorSwatcheDTO.getSkuId());
-			colorSwatche.setRgbColor(Optional.ofNullable(colorRGBMap.get(colorSwatcheDTO.getBasicColor().toUpperCase())).orElse(ApplicationConstant.BLANK));
+			colorSwatche.setRgbColor(Optional.ofNullable(colorRGBMap.get(colorSwatcheDTO.getBasicColor().toUpperCase()))
+					.orElse(ApplicationConstant.BLANK));
 			product.getColorSwatches().add(colorSwatche);
 		});
 	}
-	
-	private void populatePrice(PriceDTO priceDTO, Product product)
-	{
-		
-		product.setNowPrice( productServiceUtil.getCurrencyValue(productServiceUtil.getNowPrice(priceDTO.getNow()), priceDTO.getCurrency()));
+
+	private void populatePrice(PriceDTO priceDTO, Product product) {
+
+		product.setNowPrice(productServiceUtil.getPriceWithCurrency(priceDTO.getNow(), priceDTO.getCurrency()));
 	}
-	
-	private void populatePriceLabel(PriceDTO priceDTO, Product product)
-	{
+
+	private void populatePriceLabel(PriceDTO priceDTO, Product product) {
+
 		List<Object> priceList = new LinkedList<>();
-		String defaultLabelType= productServiceUtil.getLabelType();
-		
-		boolean setDefaultLabel=true;
-		if(defaultLabelType.equals(ApplicationConstant.PERCENTLABEL))
-		{
-			priceList.add(productServiceUtil.getPercentValue(productServiceUtil.calculatePercent(priceDTO.getWas(), productServiceUtil.getNowPrice(priceDTO.getNow()))));
-		}else
-		{
-			priceList.add(productServiceUtil.getCurrencyValue(priceDTO.getWas(),priceDTO.getCurrency()));
+
+		String messageLabelCode = ApplicationConstant.SHOWWASNOWMESSAGELABEL;
+
+		if (this.parms[0].equals(ApplicationConstant.SHWOPERCENTDISCLABEL)) {
+			priceList.add(productServiceUtil
+					.getPercentValue(productServiceUtil.calculatePercent(priceDTO.getWas(), priceDTO.getNow())));
+			messageLabelCode = ApplicationConstant.SHWOPERCENTDISCMESSAGELABEL;
+		} else {
+			priceList.add(productServiceUtil.getPriceWithCurrency(priceDTO.getWas(), priceDTO.getCurrency()));
 		}
-		
-		if(defaultLabelType.equals(ApplicationConstant.SHOWTHENLABEL) && (!StringUtils.isEmpty(priceDTO.getThen1()) || !StringUtils.isEmpty(priceDTO.getThen2())))
-		{
-			priceList.add(productServiceUtil.getCurrencyValue(StringUtils.isEmpty(priceDTO.getThen1())?priceDTO.getThen2():priceDTO.getThen1(),priceDTO.getCurrency()));
-			setDefaultLabel=false;
+
+		if (this.parms[0].equals(ApplicationConstant.SHOWWASTHENLABEL)
+				&& (!StringUtils.isEmpty(priceDTO.getThen1()) || !StringUtils.isEmpty(priceDTO.getThen2()))) {
+			priceList.add(productServiceUtil.getPriceWithCurrency(
+					StringUtils.isEmpty(priceDTO.getThen1()) ? priceDTO.getThen2() : priceDTO.getThen1(),
+					priceDTO.getCurrency()));
+			messageLabelCode = ApplicationConstant.SHOWWASTHENMESSAGELABEL;
 		}
-		
-		if(!priceList.isEmpty())
-		{
+
+		if (!priceList.isEmpty()) {
 			priceList.add(product.getNowPrice());
 		}
-		
-		if(setDefaultLabel && defaultLabelType.equals(ApplicationConstant.SHOWTHENLABEL))
-		{
-			defaultLabelType= ApplicationConstant.SHOWNOWLABEL;
-		}
-		MessageSourceResolvable dmsgr= new DefaultMessageSourceResolvable(new String[]{priceLabelMap.get(defaultLabelType)}, priceList.toArray(new Object[priceList.size()]) );
-	
-		product.setPriceLabel(messageSource.getMessage(dmsgr, Locale.getDefault()));
-	
+
+		product.setPriceLabel(productServiceUtil.getTextMessage(messageLabelCode, priceList));
 	}
 
 	public void setColorRGBMap(Map<String, String> colorRGBMap) {
@@ -115,13 +101,4 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 	public void setProductServiceUtil(ProductServiceUtil productServiceUtil) {
 		this.productServiceUtil = productServiceUtil;
 	}
-	
-	public void setPriceLabelMap(Map<String, String> priceLabelMap) {
-		this.priceLabelMap = priceLabelMap;
-	}
-
-	public void setMessageSource(MessageSource messageSource) {
-		this.messageSource = messageSource;
-	}
-
 }

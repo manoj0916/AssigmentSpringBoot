@@ -4,16 +4,21 @@ package com.jlp.application.util;
  * @author Manoj
  */
 public class ApplicationConstant {
-	
-	private ApplicationConstant(){}
-	
-	public static final String BLANK="";
-	public static final String TOVALUE="to";
-	
-	public static final String SHOWNOWLABEL="ShowWasNow";
-	public static final String SHOWTHENLABEL="ShowWasThenNow";
-	public static final String PERCENTLABEL="ShowPercDiscount";
-	
-	public static final double COMPAREVALUE=10;
+
+	private ApplicationConstant() {
+	}
+
+	public static final String BLANK = "";
+	public static final String TOVALUE = "to";
+
+	public static final String SHOWWASNOWLABEL = "ShowWasNow";
+	public static final String SHOWWASTHENLABEL = "ShowWasThenNow";
+	public static final String SHWOPERCENTDISCLABEL = "ShowPercDiscount";
+
+	public static final String SHOWWASNOWMESSAGELABEL = "textlabel.was.now";
+	public static final String SHOWWASTHENMESSAGELABEL = "textlabel.was.then.now";
+	public static final String SHWOPERCENTDISCMESSAGELABEL = "textlabel.percent.discount";
+
+	public static final double COMPAREVALUE = 10;
 
 }

@@ -12,24 +12,29 @@ implements Converter<SOURCE, TARGET>, Populator<SOURCE, TARGET>{
 	
 	private Populator<SOURCE, TARGET> populator;
 	private Class<TARGET> targetClass;
+	private String[] parms;
 	
+	public void setParms(String[] parms) {
+		this.parms = parms;
+	}
+
 	@Override
-	public TARGET convert(final SOURCE source, final TARGET prototype)
+	public TARGET convert(final SOURCE source, final TARGET prototype, String... parms)
 	{
-		populate(source, prototype);
+		populate(source, prototype, parms);
 		return prototype;
 	}
 
 	@Override
-	public  void populate(final SOURCE source, final TARGET target)
+	public  void populate(final SOURCE source, final TARGET target, String... parms)
 	{
-		populator.populate(source, target);
+		populator.populate(source, target, parms);
 	}
 
 	@Override
 	public TARGET convert(SOURCE source) {
 		final TARGET target = targetClass == null ? createTarget() : createFromClass();
-		populate(source, target);
+		populate(source, target, parms);
 		return target;
 	}
 	

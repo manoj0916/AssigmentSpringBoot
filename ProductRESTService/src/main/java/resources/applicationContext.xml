@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -8,72 +10,76 @@
        http://www.springframework.org/schema/util 
        http://www.springframework.org/schema/util/spring-util.xsd">
 
-	 <context:component-scan base-package="com.jlp.application"/>
+	<context:component-scan
+		base-package="com.jlp.application" />
 
-	<bean id="productInfoFacade" class="com.jlp.application.facade.impl.DefaultProductInfoFacade">
-		<property name="productInfoService" ref="productInfoService"/>
-		<property name="productConvertor" ref="productConvertor"/>
-		<property name="productServiceUtil" ref="productServiceUtil"/>
+	<bean id="productInfoFacade"
+		class="com.jlp.application.facade.impl.DefaultProductInfoFacade">
+		<property name="productInfoService" ref="productInfoService" />
+		<property name="productConvertor" ref="productConvertor" />
 	</bean>
 
-	<bean id="productInfoService" class="com.jlp.application.services.impl.DefaultProductInfoService">
-		<property name="webClientService" ref="webClientService"/>
-		<property name="productServiceUtil" ref="productServiceUtil"/>
+	<bean id="productInfoService"
+		class="com.jlp.application.services.impl.DefaultProductInfoService">
+		<property name="webClientService" ref="webClientService" />
+		<property name="productServiceUtil" ref="productServiceUtil" />
 	</bean>
-	
-	<bean id="okHttpClient" class="okhttp3.OkHttpClient"/>
-	
-	<bean id="webClientService" class="com.jlp.application.services.impl.DefaultWebClientService">
-        <constructor-arg index="0" ref="okHttpClient"/>
-        <constructor-arg index="1" value="${products.category.api.connection.timeout},${products.category.api.read.timeout}"/>
-        <property name="apiBaseURL" value="${products.category.source.api.base.url}"/>
-        <property name="key" value="${products.category.api.key.value}"/> 
+
+	<bean id="okHttpClient" class="okhttp3.OkHttpClient" />
+
+	<bean id="webClientService"
+		class="com.jlp.application.services.impl.DefaultWebClientService">
+		<constructor-arg index="0" ref="okHttpClient" />
+		<constructor-arg index="1"
+			value="${products.category.api.connection.timeout},${products.category.api.read.timeout}" />
+		<property name="apiBaseURL"
+			value="${products.category.source.api.base.url}" />
+		<property name="key"
+			value="${products.category.api.key.value}" />
 	</bean>
-	
-	<bean id="productConvertor" class="com.jlp.application.convertor.impl.ProductInfoConvertor">
-		<property name="populator" ref="productInfoPopulator"/>
-		<property name="targetClass" value="com.jlp.application.data.Products"/>
+
+	<bean id="productConvertor"
+		class="com.jlp.application.convertor.impl.ProductInfoConvertor">
+		<property name="populator" ref="productInfoPopulator" />
+		<property name="targetClass"
+			value="com.jlp.application.data.Products" />
 	</bean>
-	
-	<bean id="productInfoPopulator" class="com.jlp.application.populator.impl.ProductInfoPopulator">
-		<property name="colorRGBMap" ref="colorRGBMap"/>
-		<property name="productServiceUtil" ref="productServiceUtil"/>
-		<property name="priceLabelMap" ref="priceLabelMap"/>
-		<property name="messageSource" ref="messageSource"/>
+
+	<bean id="productInfoPopulator"
+		class="com.jlp.application.populator.impl.ProductInfoPopulator">
+		<property name="colorRGBMap" ref="colorRGBMap" />
+		<property name="productServiceUtil" ref="productServiceUtil" />
 	</bean>
-	
-	<bean id="productServiceUtil" class="com.jlp.application.util.ProductServiceUtil"/>
-	
+
+	<bean id="productServiceUtil"
+		class="com.jlp.application.util.ProductServiceUtil" >
+				<property name="messageSource" ref="messageSource" />
+		</bean>
+
 	<util:map id="colorRGBMap" map-class="java.util.Hashtable">
-        <entry key="BLACK" value="000000"/>
-        <entry key="WHITE" value="FFFFFF"/>
-        <entry key="RED" value="FF0000"/>
-        <entry key="LIME" value="00FF00"/>
-        <entry key="BLUE" value="0000FF"/>
-        <entry key="YELLOW" value="FFFF00"/>
-        <entry key="CYAN" value="00FFFF"/>
-        <entry key="MAGENTA" value="FF00FF"/>
-        <entry key="SILVER" value="C0C0C0"/>
-        <entry key="GREY" value="808080"/>
-        <entry key="MAROON" value="800000"/>
-        <entry key="OLIVE" value="808000"/>
-        <entry key="GREEN" value="008000"/>
-        <entry key="PURPLE" value="800080"/>
-        <entry key="TEAL" value="008080"/>
-        <entry key="NAVY" value="000080"/>
-    </util:map>
-    
-    <util:map id="priceLabelMap">
-        <entry key="ShowWasNow" value="textlabel.was.now"/>
-        <entry key="ShowWasThenNow" value="textlabel.was.then.now"/>
-        <entry key="ShowPercDiscount" value="textlabel.percent.discount"/>
-    </util:map>
-    
-    <bean id="messageSource"
+		<entry key="BLACK" value="000000" />
+		<entry key="WHITE" value="FFFFFF" />
+		<entry key="RED" value="FF0000" />
+		<entry key="LIME" value="00FF00" />
+		<entry key="BLUE" value="0000FF" />
+		<entry key="YELLOW" value="FFFF00" />
+		<entry key="CYAN" value="00FFFF" />
+		<entry key="MAGENTA" value="FF00FF" />
+		<entry key="SILVER" value="C0C0C0" />
+		<entry key="GREY" value="808080" />
+		<entry key="MAROON" value="800000" />
+		<entry key="OLIVE" value="808000" />
+		<entry key="GREEN" value="008000" />
+		<entry key="PURPLE" value="800080" />
+		<entry key="TEAL" value="008080" />
+		<entry key="NAVY" value="000080" />
+	</util:map>
+
+	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename">
 			<value>resources\messages</value>
 		</property>
 	</bean>
-    
+
 </beans>

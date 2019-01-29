@@ -7,6 +7,5 @@ import com.jlp.application.dto.ProductInfoDTO;
  * @author Manoj
  */
 
-public class ProductInfoConvertor extends AbstractConvertor<ProductInfoDTO,Products> {
-	
+public class ProductInfoConvertor extends AbstractConvertor<ProductInfoDTO, Products> {
 }

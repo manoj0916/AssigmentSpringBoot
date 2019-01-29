@@ -1,11 +1,11 @@
 # Product List Api
 Get formatted list of discounted products under a Category sorted as "highest price reduction first". Price reduction is calculated using [price.was - price.now].
 
-## Requirements
+## System software Requirements
 * Oracle JDK 1.8.0_121 or higher
 * Java IDE (e.g. Eclipse IDE)
 
-## Design for the project
+## Highlevel Design for the project
  	We used J2EE design patterns such as facade, service etc. to implement the project. It has the structure as below:
  	
 	View Layer (REST call in this case)
@@ -30,19 +30,19 @@ Get formatted list of discounted products under a Category sorted as "highest pr
 * Using `Import > General > Existing project to workspace` (or from the welcome screen, use `Import Project`). OR
 
 
-## To Build & the application
+## To Build & run the application
 
 Clean and build the project by selecting 'Project > Clean...'
 
 To run the Spring boot for Product API please follow below steps.
 
-#### Eclipse IDE
+#### With Eclipse IDE
 	
 	Select com.jlp.application.BootProductRESTService.java
 
-    'right click > Run As > Spring Boot App'
+    	'right click > Run As > Spring Boot App'
 
-#### Maven command prompt
+#### With Maven command prompt
 
     Go to the project folder in command prompt
     
@@ -50,7 +50,7 @@ To run the Spring boot for Product API please follow below steps.
     
     Execute command 'mvnw install'
     
-    Execute command 'spring-boot:run'
+    Execute command 'mvnw spring-boot:run'
 
     
 Above should start the application on embedded Tomcat server @ localhost, port: 8080, with sample console messages like below
@@ -59,7 +59,7 @@ INFO 19224 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Regi
 INFO 19224 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 INFO 19224 --- [           main] c.j.application.BootProductRESTService   : Started BootProductRESTService in 4.854 seconds (JVM running for 10.976)
 
-
+#### Check functinality working
 Application output can be seen in browser by hitting the URL with category Id and label type(optional)
 
     Endpoint: http://localhost:8080/v1/categories/{categoryId}/productsWithReducedPrice?labelType={labelType}

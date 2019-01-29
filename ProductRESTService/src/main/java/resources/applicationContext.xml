@@ -63,7 +63,7 @@
         <entry key="NAVY" value="000080"/>
     </util:map>
     
-    <util:map id="priceLabelMap" map-class="java.util.Hashtable">
+    <util:map id="priceLabelMap">
         <entry key="ShowWasNow" value="textlabel.was.now"/>
         <entry key="ShowWasThenNow" value="textlabel.was.then.now"/>
         <entry key="ShowPercDiscount" value="textlabel.percent.discount"/>

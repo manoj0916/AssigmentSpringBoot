@@ -47,33 +47,15 @@
 
 	<bean id="productInfoPopulator"
 		class="com.jlp.application.populator.impl.ProductInfoPopulator">
-		<property name="colorRGBMap" ref="colorRGBMap" />
+		<property name="colorRGBMap"
+			value="#{${skiu.color.colorRGBMap.map}}" />
 		<property name="productServiceUtil" ref="productServiceUtil" />
 	</bean>
 
 	<bean id="productServiceUtil"
-		class="com.jlp.application.util.ProductServiceUtil" >
-				<property name="messageSource" ref="messageSource" />
-		</bean>
-
-	<util:map id="colorRGBMap" map-class="java.util.Hashtable">
-		<entry key="BLACK" value="000000" />
-		<entry key="WHITE" value="FFFFFF" />
-		<entry key="RED" value="FF0000" />
-		<entry key="LIME" value="00FF00" />
-		<entry key="BLUE" value="0000FF" />
-		<entry key="YELLOW" value="FFFF00" />
-		<entry key="CYAN" value="00FFFF" />
-		<entry key="MAGENTA" value="FF00FF" />
-		<entry key="SILVER" value="C0C0C0" />
-		<entry key="GREY" value="808080" />
-		<entry key="MAROON" value="800000" />
-		<entry key="OLIVE" value="808000" />
-		<entry key="GREEN" value="008000" />
-		<entry key="PURPLE" value="800080" />
-		<entry key="TEAL" value="008080" />
-		<entry key="NAVY" value="000080" />
-	</util:map>
+		class="com.jlp.application.util.ProductServiceUtil">
+		<property name="messageSource" ref="messageSource" />
+	</bean>
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">

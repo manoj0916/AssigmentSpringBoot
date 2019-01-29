@@ -19,8 +19,8 @@ import com.jlp.application.util.ApplicationConstant;
 import com.jlp.application.util.ProductServiceUtil;
 
 /**
- * @author Manoj
- * Populator which will populate list of products from DTOs received from service.
+ * @author Manoj Populator which will populate list of products from DTOs
+ *         received from service.
  */
 public class ProductInfoPopulator implements Populator<List<ProductDTO>, Products> {
 
@@ -30,13 +30,15 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 
 	private ProductServiceUtil productServiceUtil;
 
-	/* (non-Javadoc)
-	 * @see com.jlp.application.populator.Populator#populate(java.lang.Object, java.lang.Object, java.lang.String[])
-	 * Generic populator to populate target from source.
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.jlp.application.populator.Populator#populate(java.lang.Object,
+	 * java.lang.Object, java.lang.String[]) Generic populator to populate target
+	 * from source.
 	 */
 	@Override
 	public void populate(List<ProductDTO> source, Products target, String... parms) {
-
 		log.debug("Data population starts for " + source.size() + " products");
 		source.forEach(productDTO -> {
 			Product productInfo = new Product();
@@ -44,7 +46,8 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 			productInfo.setTitle(productDTO.getTitle());
 			populateColorSwatches(productDTO.getColorSwatches(), productInfo);
 			populatePrice(productDTO.getPrice(), productInfo);
-			populatePriceLabel(productDTO.getPrice(), productInfo,parms == null ? new String[] {ApplicationConstant.SHOWWASNOWLABEL} :parms);
+			populatePriceLabel(productDTO.getPrice(), productInfo,
+					parms == null ? new String[] { ApplicationConstant.SHOWWASNOWLABEL } : parms);
 			target.getProducts().add(productInfo);
 		});
 
@@ -69,6 +72,7 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 
 	/**
 	 * Populate Now price for the product.
+	 * 
 	 * @param priceDTO
 	 * @param product
 	 */

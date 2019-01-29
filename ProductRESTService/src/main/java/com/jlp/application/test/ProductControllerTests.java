@@ -1,4 +1,4 @@
-package jlp.test;
+package com.jlp.application.test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -22,16 +22,16 @@ public class ProductControllerTests {
     private MockMvc mockMvc;
 
     @Test
-    public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
+    public void noParamgetProductsShouldReturnDefaultMessage() throws Exception {
 
-        this.mockMvc.perform(get("/productsWithReducedPrice")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/categories/600001506/productsWithReducedPrice")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").value("products"));
     }
 
     @Test
-    public void paramGreetingShouldReturnTailoredMessage() throws Exception {
+    public void paramgetProductsShouldReturnTailoredMessage() throws Exception {
 
-        this.mockMvc.perform(get("/productsWithReducedPrice").param("labelType", "ShowWasNow"))
+        this.mockMvc.perform(get("/categories/600001506/productsWithReducedPrice").param("labelType", "ShowWasNow"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").value("products"));
     }

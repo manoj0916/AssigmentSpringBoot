@@ -19,7 +19,7 @@ Get formatted list of discounted products under a Category sorted as "highest pr
 ## Control flow
 
 	Request <-> ProductInfoRESTService <-> ProductInfoFacade <-> ProductInfoService <-> Service call via OkHttp3 (Retrofit)
-							|
+							|(called from Facade Layer)
 							V
 					ProductInfoPopulator (via generic convertor)
 

@@ -8,6 +8,6 @@ import com.jlp.application.data.Products;
  */
 public interface ProductInfoFacade {
 	
-	Products getReducedPriceProductsByLabelType(String labelType);
+	Products getReducedPriceProductsByCategory(String categoryId, String labelType);
 
 }

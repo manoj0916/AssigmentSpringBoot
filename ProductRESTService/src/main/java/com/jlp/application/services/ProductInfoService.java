@@ -1,12 +1,14 @@
 package com.jlp.application.services;
 
-import com.jlp.application.dto.ProductInfoDTO;
+import java.util.List;
+
+import com.jlp.application.dto.ProductDTO;
 
 /**
  * @author Manoj
  */
 public interface ProductInfoService {
 	
-	ProductInfoDTO getProductsByCategory(String labelType);
+	List<ProductDTO> getSortedPriceReducedProductsByCategory(String categoryId);
 
 }

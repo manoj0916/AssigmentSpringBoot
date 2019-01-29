@@ -1,5 +1,8 @@
 package com.jlp.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DynamicAttributes {
 		 private String newinproducttype;
 		 private String washinginstructions;

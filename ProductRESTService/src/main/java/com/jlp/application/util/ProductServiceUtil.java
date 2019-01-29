@@ -1,32 +1,55 @@
 package com.jlp.application.util;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author Manoj
  */
 public class ProductServiceUtil {
+	
+	private String labelType;
 
-	public String getDecimalValue(String value)
+	public String getLabelType() {
+		return labelType;
+	}
+
+	public void setLabelType(String labelType) {
+		this.labelType = labelType;
+	}
+	
+	public String getCurrencyValue(String value, String currencyCode)
 	{
-		DecimalFormat decimalFormat = (DecimalFormat)NumberFormat.getInstance();
+		NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+		
+		Currency currency = Currency.getInstance(currencyCode);
+		format.setCurrency(currency);
 		Double doubleValue = Double.parseDouble(value);
-		if(doubleValue > ApplicationConstant.COMPAREVALUE)
+		
+		if(doubleValue > ApplicationConstant.COMPAREVALUE && doubleValue == Math.floor(doubleValue))
 		{
-			decimalFormat.applyPattern(ApplicationConstant.BIGVALUEPATTERN);
-		}else
-		{
-			decimalFormat.applyPattern(ApplicationConstant.SMALLVALUEPATTERN);
+			format.setMaximumFractionDigits(0);
 		}
-		return decimalFormat.format(Double.parseDouble(value));
+		return format.format(doubleValue);
+	}
+	
+	public String getPercentValue(Double value)
+	{
+		NumberFormat format = NumberFormat.getPercentInstance(Locale.getDefault());
+		
+		return format.format(value);
 	}
 	
 	public Double getDoubleValue(String value)
 	{
 		return Double.parseDouble(value);
+	}
+	
+	public Double substractValues(String value1, String value2)
+	{
+		return getDoubleValue(value1) - getDoubleValue(value2);
 	}
 	
 	public String getNowPrice(Object price)
@@ -40,13 +63,13 @@ public class ProductServiceUtil {
 		}
 	}
 	
-	public String getCurrencySymbol(Map<String, String> currencyMap, String currency)
+	public Double calculatePercent(String wasPrice, String nowPrice)
 	{
-		return Optional.ofNullable(currencyMap.get(currency.toUpperCase())).orElse(ApplicationConstant.BLANK);
+		return calculatePercent(getDoubleValue(wasPrice),getDoubleValue(nowPrice));
 	}
 	
 	public Double calculatePercent(Double wasPrice, Double nowPrice)
 	{
-		return (wasPrice - nowPrice)/wasPrice *100;
+		return (wasPrice - nowPrice)/wasPrice;
 	}
 }

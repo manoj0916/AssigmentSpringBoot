@@ -2,6 +2,9 @@ package com.jlp.application.dto;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductInfoDTO {
 	 private ArrayList <ProductDTO> products = new ArrayList <ProductDTO> ();
 	 private ArrayList <Object> facets = new ArrayList <Object> ();

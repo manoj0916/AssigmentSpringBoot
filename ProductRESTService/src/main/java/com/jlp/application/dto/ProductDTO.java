@@ -2,6 +2,9 @@ package com.jlp.application.dto;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDTO {
 	 private String productId;
 	 private String type;
@@ -9,7 +12,7 @@ public class ProductDTO {
 	 private String code;
 	 private float averageRating;
 	 private float reviews;
-	 PriceDTO PriceObject;
+	 private PriceDTO price;
 	 private String image;
 	 ArrayList < Object > additionalServices = new ArrayList < Object > ();
 	 private String displaySpecialOffer;
@@ -41,14 +44,7 @@ public class ProductDTO {
 
 	 // Getter Methods 
 
-	 public PriceDTO getPriceObject() {
-		return PriceObject;
-	}
-
-	public void setPriceObject(PriceDTO priceObject) {
-		PriceObject = priceObject;
-	}
-
+	
 	public ArrayList<ColorSwatcheDTO> getColorSwatches() {
 		return colorSwatches;
 	}
@@ -82,7 +78,7 @@ public class ProductDTO {
 	 }
 
 	 public PriceDTO getPrice() {
-	  return PriceObject;
+	  return price;
 	 }
 
 	 public String getImage() {
@@ -208,7 +204,7 @@ public class ProductDTO {
 	 }
 
 	 public void setPrice(PriceDTO priceObject) {
-	  this.PriceObject = priceObject;
+	  this.price = priceObject;
 	 }
 
 	 public void setImage(String image) {

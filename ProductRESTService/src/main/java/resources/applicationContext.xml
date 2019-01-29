@@ -13,14 +13,21 @@
 	<bean id="productInfoFacade" class="com.jlp.application.facade.impl.DefaultProductInfoFacade">
 		<property name="productInfoService" ref="productInfoService"/>
 		<property name="productConvertor" ref="productConvertor"/>
+		<property name="productServiceUtil" ref="productServiceUtil"/>
 	</bean>
 
 	<bean id="productInfoService" class="com.jlp.application.services.impl.DefaultProductInfoService">
 		<property name="webClientService" ref="webClientService"/>
+		<property name="productServiceUtil" ref="productServiceUtil"/>
 	</bean>
 	
+	<bean id="okHttpClient" class="okhttp3.OkHttpClient"/>
+	
 	<bean id="webClientService" class="com.jlp.application.services.impl.DefaultWebClientService">
-		<property name="apiURL" value="${products.source.api.url}"/>
+        <constructor-arg index="0" ref="okHttpClient"/>
+        <constructor-arg index="1" value="${products.category.api.connection.timeout},${products.category.api.read.timeout}"/>
+        <property name="apiBaseURL" value="${products.category.source.api.base.url}"/>
+        <property name="key" value="${products.category.api.key.value}"/> 
 	</bean>
 	
 	<bean id="productConvertor" class="com.jlp.application.convertor.impl.ProductInfoConvertor">
@@ -30,14 +37,14 @@
 	
 	<bean id="productInfoPopulator" class="com.jlp.application.populator.impl.ProductInfoPopulator">
 		<property name="colorRGBMap" ref="colorRGBMap"/>
-		<property name="currencyMap" ref="currencyMap"/>
 		<property name="productServiceUtil" ref="productServiceUtil"/>
-		<property name="priceLabels" value="${product.price.labels}"/>
+		<property name="priceLabelMap" ref="priceLabelMap"/>
+		<property name="messageSource" ref="messageSource"/>
 	</bean>
 	
 	<bean id="productServiceUtil" class="com.jlp.application.util.ProductServiceUtil"/>
 	
-	<util:map id="colorRGBMap">
+	<util:map id="colorRGBMap" map-class="java.util.Hashtable">
         <entry key="BLACK" value="000000"/>
         <entry key="WHITE" value="FFFFFF"/>
         <entry key="RED" value="FF0000"/>
@@ -56,9 +63,17 @@
         <entry key="NAVY" value="000080"/>
     </util:map>
     
-    <util:map id="currencyMap">
-    	<entry key="GBP" value="£"/>
-        <entry key="DOLLAR" value="$"/>
+    <util:map id="priceLabelMap" map-class="java.util.Hashtable">
+        <entry key="ShowWasNow" value="textlabel.was.now"/>
+        <entry key="ShowWasThenNow" value="textlabel.was.then.now"/>
+        <entry key="ShowPercDiscount" value="textlabel.percent.discount"/>
     </util:map>
-
+    
+    <bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>resources\messages</value>
+		</property>
+	</bean>
+    
 </beans>

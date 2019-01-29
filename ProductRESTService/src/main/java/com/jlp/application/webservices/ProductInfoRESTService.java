@@ -2,6 +2,7 @@ package com.jlp.application.webservices;
 
 import javax.annotation.Resource;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,10 +20,11 @@ public class ProductInfoRESTService {
 	@Resource(name="productInfoFacade")
 	ProductInfoFacade productInfoFacade;
 	
-    @RequestMapping("/productsWithReducedPrice")
-    public Products getProducts(@RequestParam(value="labelType", defaultValue="ShowWasNow") String labelType) {
+    @RequestMapping("/**/categories/{categoryId}/productsWithReducedPrice")
+    public Products getProducts(@PathVariable String categoryId,
+    		@RequestParam(value="labelType", defaultValue="ShowWasNow") String labelType) {
     	
-        return productInfoFacade.getReducedPriceProductsByLabelType(labelType);
+        return productInfoFacade.getReducedPriceProductsByCategory(categoryId, labelType);
     }
 
 }

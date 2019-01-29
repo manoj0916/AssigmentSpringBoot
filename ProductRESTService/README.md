@@ -8,13 +8,13 @@ Get formatted list of discounted products under a Category sorted as "highest pr
 ## Design for the project
  	We used J2EE design patterns such as facade, service etc. to implement the project. It has the structure as below:
  	
-		View Layer (REST call in this case)
-						|
-						V
-		Facade Layer (Facade classes to make sure abstract function available for omni channels & re-usability) <-> convertor/populator (Generic populator to populate final data model from DTO)
-						|
-						V
-		Service Layer (Provide facilitation the concept of re-usability of service across enterprise)
+	View Layer (REST call in this case)
+		|
+		V
+	Facade Layer (Facade classes to make sure abstract function available for omni channels & re-usability) <-> convertor/populator (Generic populator to populate final data model from DTO)
+		|
+		V
+	Service Layer (Provide facilitation the concept of re-usability of service across enterprise)
  			
 ## Control flow
 
@@ -53,7 +53,7 @@ To run the Spring boot for Product API please follow below steps.
     Execute command 'spring-boot:run'
 
     
-This should start the application on embedded Tomcat server @ localhost, port: 8080, with sample console messages like below
+Above should start the application on embedded Tomcat server @ localhost, port: 8080, with sample console messages like below
 
 INFO 19224 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
 INFO 19224 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
@@ -71,5 +71,5 @@ Application output can be seen in browser by hitting the URL with category Id an
       - http://localhost:8080/v1/categories/600001506/productsWithReducedPrice?labelType=ShowWasThenNow
       - http://localhost:8080/v1/categories/600001506/productsWithReducedPrice?labelType=ShowPercDiscount
  
-Formatted JSON response of products with reduced price under that category or Respective Error messages should get displayed on the browser. Price label formatting is according to the allowed labelType passed as URL parameter (default is - Show Was, Now). 
+Formatted JSON response of products with reduced price under that category or Respective Error messages should get displayed on the browser. Price label formatting is according to the allowed labelType passed as URL parameter (default is - Show Was £x.xx, Now £y.yy). 
  

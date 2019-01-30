@@ -11,6 +11,11 @@ import com.jlp.application.dto.ProductInfoDTO;
  */
 public interface WebClientService {
 
+	/**
+	 * Get product list by category, calling the API url.
+	 * @param categoryId
+	 * @return
+	 */
 	ProductInfoDTO getProductListForCategory(String categoryId);
 	
 }

@@ -4,6 +4,7 @@ Get formatted list of discounted products under a Category sorted as "highest pr
 ## System software Requirements
 * Oracle JDK 1.8.0_121 or higher
 * Java IDE (e.g. Eclipse IDE)
+* For executing the project we either can use Eclipse IDE or maven
 
 ## Highlevel Design for the project
  	We used J2EE design patterns such as facade, service etc. to implement the project. It has the structure as below:

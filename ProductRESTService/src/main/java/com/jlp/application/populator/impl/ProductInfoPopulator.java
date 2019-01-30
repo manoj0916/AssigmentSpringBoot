@@ -96,16 +96,16 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 
 		String messageLabelCode = ApplicationConstant.SHOWWASNOWMESSAGELABEL;
 
-		if (params[0].equals(ApplicationConstant.SHWOPERCENTDISCLABEL)) {
+		if (ApplicationConstant.SHWOPERCENTDISCLABEL.equals(params[0])) {
 			priceList.add(productServiceUtil
 					.getPercentValue(productServiceUtil.calculatePercent(priceDTO.getWas(), priceDTO.getNow())));
 			messageLabelCode = ApplicationConstant.SHWOPERCENTDISCMESSAGELABEL;
-		} else if (params[0].equals(ApplicationConstant.SHOWWASTHENLABEL)
+		} else if (ApplicationConstant.SHOWWASTHENLABEL.equals(params[0])
 				&& (!StringUtils.isEmpty(priceDTO.getThen1()) || !StringUtils.isEmpty(priceDTO.getThen2()))) {
+			priceList.add(productServiceUtil.getPriceWithCurrency(priceDTO.getWas(), priceDTO.getCurrency()));
 			priceList.add(productServiceUtil.getPriceWithCurrency(
 					StringUtils.isEmpty(priceDTO.getThen1()) ? priceDTO.getThen2() : priceDTO.getThen1(),
 					priceDTO.getCurrency()));
-			priceList.add(productServiceUtil.getPriceWithCurrency(priceDTO.getWas(), priceDTO.getCurrency()));
 			messageLabelCode = ApplicationConstant.SHOWWASTHENMESSAGELABEL;
 		} else {
 			priceList.add(productServiceUtil.getPriceWithCurrency(priceDTO.getWas(), priceDTO.getCurrency()));

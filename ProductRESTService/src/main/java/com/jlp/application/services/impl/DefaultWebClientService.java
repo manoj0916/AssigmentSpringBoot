@@ -39,6 +39,7 @@ public class DefaultWebClientService implements WebClientService {
 	 * @param okHttpClient
 	 * @param params
 	 * Constructor which set connect & read timeout to okHttpClient.
+	 * This is done to make sure, we use singleton okHttpClient with connection & read timeout.
 	 */
 	public DefaultWebClientService(OkHttpClient okHttpClient, String[] params) {
 		super();

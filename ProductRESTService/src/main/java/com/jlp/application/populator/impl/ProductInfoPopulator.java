@@ -19,10 +19,10 @@ import com.jlp.application.util.ApplicationConstant;
 import com.jlp.application.util.ProductServiceUtil;
 
 /**
- * @author Manoj 
+ * @author Manoj
  * 
- * Populator which will populate list of products from DTOs
- *         received from service.
+ *         Populator which will populate list of products from DTOs received
+ *         from service.
  */
 public class ProductInfoPopulator implements Populator<List<ProductDTO>, Products> {
 
@@ -100,21 +100,18 @@ public class ProductInfoPopulator implements Populator<List<ProductDTO>, Product
 			priceList.add(productServiceUtil
 					.getPercentValue(productServiceUtil.calculatePercent(priceDTO.getWas(), priceDTO.getNow())));
 			messageLabelCode = ApplicationConstant.SHWOPERCENTDISCMESSAGELABEL;
-		} else {
-			priceList.add(productServiceUtil.getPriceWithCurrency(priceDTO.getWas(), priceDTO.getCurrency()));
-		}
-
-		if (params[0].equals(ApplicationConstant.SHOWWASTHENLABEL)
+		} else if (params[0].equals(ApplicationConstant.SHOWWASTHENLABEL)
 				&& (!StringUtils.isEmpty(priceDTO.getThen1()) || !StringUtils.isEmpty(priceDTO.getThen2()))) {
 			priceList.add(productServiceUtil.getPriceWithCurrency(
 					StringUtils.isEmpty(priceDTO.getThen1()) ? priceDTO.getThen2() : priceDTO.getThen1(),
 					priceDTO.getCurrency()));
+			priceList.add(productServiceUtil.getPriceWithCurrency(priceDTO.getWas(), priceDTO.getCurrency()));
 			messageLabelCode = ApplicationConstant.SHOWWASTHENMESSAGELABEL;
+		} else {
+			priceList.add(productServiceUtil.getPriceWithCurrency(priceDTO.getWas(), priceDTO.getCurrency()));
 		}
 
-		if (!priceList.isEmpty()) {
-			priceList.add(product.getNowPrice());
-		}
+		priceList.add(product.getNowPrice());
 
 		product.setPriceLabel(productServiceUtil.getTextMessage(messageLabelCode, priceList));
 	}

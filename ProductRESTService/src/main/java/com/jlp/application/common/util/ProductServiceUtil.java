@@ -23,16 +23,6 @@ public class ProductServiceUtil {
 	
 	private Map<String, String> colorRGBMap;
 	
-	public void setColorRGBMap(Map<String, String> colorRGBMap) {
-		this.colorRGBMap = colorRGBMap;
-	}
-
-
-	public void setMessageSource(MessageSource messageSource) {
-		this.messageSource = messageSource;
-	}
-	
-
 	/**
 	 * Converts values to currency using the currency code & format as per logic.
 	 * 
@@ -113,10 +103,24 @@ public class ProductServiceUtil {
 		return messageSource.getMessage(dmsgr, Locale.getDefault());
 	}
 	
+	/**
+	 * This method returns hexa code RGB for a given color.
+	 * @param basicColor
+	 * @return
+	 */
 	public  String getRGBForBaseColor(String basicColor)
 	{
 		return Optional.ofNullable(colorRGBMap.get(basicColor.toUpperCase()))
 				.orElse(ApplicationConstant.BLANK);
+	}
+	
+	public void setColorRGBMap(Map<String, String> colorRGBMap) {
+		this.colorRGBMap = colorRGBMap;
+	}
+
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
 	}
 
 }

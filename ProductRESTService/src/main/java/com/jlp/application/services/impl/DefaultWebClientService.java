@@ -43,8 +43,11 @@ public class DefaultWebClientService implements WebClientService {
 	 */
 	public DefaultWebClientService(OkHttpClient okHttpClient, String[] params) {
 		super();
-		okHttpClient.newBuilder().connectTimeout(Duration.ofMillis(Long.parseLong(params[0])))
+		if(params.length > 1)
+		{
+			okHttpClient.newBuilder().connectTimeout(Duration.ofMillis(Long.parseLong(params[0])))
 				.readTimeout(Duration.ofMillis(Long.parseLong(params[1])));
+		}
 		this.okHttpClient = okHttpClient;
 	}
 

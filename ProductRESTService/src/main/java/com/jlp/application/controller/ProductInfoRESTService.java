@@ -1,4 +1,4 @@
-package com.jlp.application.cotroller;
+package com.jlp.application.controller;
 
 import javax.annotation.Resource;
 

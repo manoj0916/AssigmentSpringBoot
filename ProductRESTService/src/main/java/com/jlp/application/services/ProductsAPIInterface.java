@@ -1,6 +1,8 @@
 package com.jlp.application.services;
 
-import com.jlp.application.dto.ProductInfoDTO;
+
+
+import com.jlp.application.model.Products;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -16,5 +18,5 @@ import retrofit2.http.Query;
 public interface ProductsAPIInterface {
 	
 	@GET("v1/categories/{category}/products")
-    Call<ProductInfoDTO> getProductByCategory(@Path("category") String categoryId,@Query("key") String key);
+    Call<Products> getProductByCategory(@Path("category") String categoryId,@Query("key") String key);
 }

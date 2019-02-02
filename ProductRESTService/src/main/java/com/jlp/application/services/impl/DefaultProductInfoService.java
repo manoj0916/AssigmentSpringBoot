@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 import org.jboss.logging.Logger;
 import org.springframework.util.StringUtils;
 
-import com.jlp.application.dto.ProductDTO;
+import com.jlp.application.common.util.ProductServiceUtil;
+import com.jlp.application.model.Product;
+import com.jlp.application.model.Products;
 import com.jlp.application.services.ProductInfoService;
 import com.jlp.application.services.WebClientService;
-import com.jlp.application.util.ProductServiceUtil;
 
 /**
  * @author Manoj
@@ -36,22 +37,24 @@ public class DefaultProductInfoService implements ProductInfoService {
 	 * 
 	 */
 	@Override
-	public List<ProductDTO> getSortedPriceReducedProductsByCategory(String categoryId) {
+	public Products getSortedPriceReducedProductsByCategory(String categoryId,String labelType) {
 
 		log.debug(":::::::::::::::Inside getProductsByCategory :::::::::::::::::(" + categoryId + ")");
 
-		List<ProductDTO> productDTOs = this.getProductsByCategory(categoryId);
+		Products productDTOs = this.getProductsByCategory(categoryId);
 		// Filter products with reduced price.
-		List<ProductDTO> fileredproductDTOs = productDTOs.stream().filter(productdto -> reductionFilter(productdto))
+		List<Product> fileredproductDTOs = productDTOs.getProducts().stream().filter(productdto -> reductionFilter(productdto,labelType))
 				.collect(Collectors.toList());
 
 		log.debug("::::::::::::::: Populate filterd " + fileredproductDTOs.size() + " products out of "
-				+ productDTOs.size() + " products :::::::::::::::");
+				+ productDTOs.getProducts().size() + " products :::::::::::::::");
 		// Sort products with highest reduced price.
 		Collections.sort(fileredproductDTOs,
 				(productDTO0, productDTO1) -> comparePriceReduction(productDTO0, productDTO1));
+		
+		productDTOs.setProducts(fileredproductDTOs);
 
-		return fileredproductDTOs;
+		return productDTOs;
 	}
 	
 	/* (non-Javadoc)
@@ -61,16 +64,18 @@ public class DefaultProductInfoService implements ProductInfoService {
 	 * 
 	 */
 	@Override
-	public List<ProductDTO> getProductsByCategory(String categoryId) {
-		return webClientService.getProductListForCategory(categoryId).getProducts();
+	public Products getProductsByCategory(String categoryId) {
+		return webClientService.getProductListForCategory(categoryId);
 	}
 
-	private boolean reductionFilter(ProductDTO productdto) {
+	private boolean reductionFilter(Product productdto,String labelType) {
+		productdto.setLabelType(labelType);
+		productdto.setProductServiceUtil(productServiceUtil);
 		return (productdto.getPrice() != null && !StringUtils.isEmpty(productdto.getPrice().getWas())
 				&& !StringUtils.isEmpty(productdto.getPrice().getNow()));
 	}
 
-	private int comparePriceReduction(ProductDTO productDTO0, ProductDTO productDTO1) {
+	private int comparePriceReduction(Product productDTO0, Product productDTO1) {
 		return productServiceUtil.subtractValues(productDTO1.getPrice().getWas(), productDTO1.getPrice().getNow())
 				.compareTo(productServiceUtil.subtractValues(productDTO0.getPrice().getWas(),
 						productDTO0.getPrice().getNow()));

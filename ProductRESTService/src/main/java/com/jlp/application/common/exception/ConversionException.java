@@ -1,4 +1,4 @@
-package com.jlp.application.exception;
+package com.jlp.application.common.exception;
 
 /**
  * @author Manoj

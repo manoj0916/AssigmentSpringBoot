@@ -1,7 +1,6 @@
 package com.jlp.application.services;
 
-import com.jlp.application.dto.ProductInfoDTO;
-
+import com.jlp.application.model.Products;
 
 /**
  * @author Manoj
@@ -16,6 +15,6 @@ public interface WebClientService {
 	 * @param categoryId
 	 * @return
 	 */
-	ProductInfoDTO getProductListForCategory(String categoryId);
+	Products getProductListForCategory(String categoryId);
 	
 }

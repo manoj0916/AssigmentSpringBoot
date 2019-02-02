@@ -1,8 +1,7 @@
 package com.jlp.application.services;
 
-import java.util.List;
+import com.jlp.application.model.Products;
 
-import com.jlp.application.dto.ProductDTO;
 
 /**
  * @author Manoj
@@ -17,7 +16,7 @@ public interface ProductInfoService {
 	 * @param categoryId
 	 * @return
 	 */
-	List<ProductDTO> getProductsByCategory(String categoryId);
+	Products getProductsByCategory(String categoryId);
 	
 	/**
 	 * This method returns sorted product list for those price reduced in highest
@@ -25,6 +24,6 @@ public interface ProductInfoService {
 	 * @param categoryId
 	 * @return
 	 */
-	List<ProductDTO> getSortedPriceReducedProductsByCategory(String categoryId);
+	Products getSortedPriceReducedProductsByCategory(String categoryId, String labelType);
 
 }

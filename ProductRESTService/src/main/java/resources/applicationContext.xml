@@ -13,16 +13,10 @@
 	<context:component-scan
 		base-package="com.jlp.application" />
 
-	<bean id="productInfoFacade"
-		class="com.jlp.application.facade.impl.DefaultProductInfoFacade">
-		<property name="productInfoService" ref="productInfoService" />
-		<property name="productConvertor" ref="productConvertor" />
-	</bean>
-
 	<bean id="productInfoService"
 		class="com.jlp.application.services.impl.DefaultProductInfoService">
 		<property name="webClientService" ref="webClientService" />
-		<property name="productServiceUtil" ref="productServiceUtil" />
+		 <property name="productServiceUtil" ref="productServiceUtil" />
 	</bean>
 
 	<bean id="okHttpClient" class="okhttp3.OkHttpClient" />
@@ -38,24 +32,12 @@
 			value="${products.category.api.key.value}" />
 	</bean>
 
-	<bean id="productConvertor"
-		class="com.jlp.application.convertor.impl.ProductInfoConvertor">
-		<property name="populator" ref="productInfoPopulator" />
-		<property name="targetClass"
-			value="com.jlp.application.data.Products" />
-	</bean>
-
-	<bean id="productInfoPopulator"
-		class="com.jlp.application.populator.impl.ProductInfoPopulator">
+	 <bean id="productServiceUtil"
+		class="com.jlp.application.common.util.ProductServiceUtil">
+		<property name="messageSource" ref="messageSource" />
 		<property name="colorRGBMap"
 			value="#{${skiu.color.colorRGBMap.map}}" />
-		<property name="productServiceUtil" ref="productServiceUtil" />
-	</bean>
-
-	<bean id="productServiceUtil"
-		class="com.jlp.application.util.ProductServiceUtil">
-		<property name="messageSource" ref="messageSource" />
-	</bean>
+	</bean> 
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">

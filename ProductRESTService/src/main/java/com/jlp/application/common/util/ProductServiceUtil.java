@@ -1,9 +1,11 @@
-package com.jlp.application.util;
+package com.jlp.application.common.util;
 
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
@@ -18,6 +20,18 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 public class ProductServiceUtil {
 
 	private MessageSource messageSource;
+	
+	private Map<String, String> colorRGBMap;
+	
+	public void setColorRGBMap(Map<String, String> colorRGBMap) {
+		this.colorRGBMap = colorRGBMap;
+	}
+
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+	
 
 	/**
 	 * Converts values to currency using the currency code & format as per logic.
@@ -26,7 +40,7 @@ public class ProductServiceUtil {
 	 * @param currencyCode
 	 * @return
 	 */
-	public String getPriceWithCurrency(String value, String currencyCode) {
+	public  String getPriceWithCurrency(String value, String currencyCode) {
 		NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
 		Currency currency = Currency.getInstance(currencyCode);
@@ -44,7 +58,7 @@ public class ProductServiceUtil {
 	 * @param value
 	 * @return
 	 */
-	public String getPercentValue(Double value) {
+	public   String getPercentValue(Double value) {
 		return NumberFormat.getPercentInstance(Locale.getDefault()).format(value);
 	}
 
@@ -53,7 +67,7 @@ public class ProductServiceUtil {
 	 * @param value
 	 * @return
 	 */
-	public Double getDoubleValue(String value) {
+	public   Double getDoubleValue(String value) {
 		return Double.parseDouble(value);
 	}
 
@@ -63,7 +77,7 @@ public class ProductServiceUtil {
 	 * @param value2
 	 * @return
 	 */
-	public Double subtractValues(String value1, String value2) {
+	public  Double subtractValues(String value1, String value2) {
 		return getDoubleValue(value1) - getDoubleValue(value2);
 	}
 
@@ -73,7 +87,7 @@ public class ProductServiceUtil {
 	 * @param nowPrice
 	 * @return
 	 */
-	public Double calculatePercent(String wasPrice, String nowPrice) {
+	public   Double calculatePercent(String wasPrice, String nowPrice) {
 		return calculatePercent(getDoubleValue(wasPrice), getDoubleValue(nowPrice));
 	}
 
@@ -83,7 +97,7 @@ public class ProductServiceUtil {
 	 * @param nowPrice
 	 * @return
 	 */
-	public Double calculatePercent(Double wasPrice, Double nowPrice) {
+	public static  Double calculatePercent(Double wasPrice, Double nowPrice) {
 		return (wasPrice - nowPrice) / wasPrice;
 	}
 
@@ -93,16 +107,16 @@ public class ProductServiceUtil {
 	 * @param values
 	 * @return
 	 */
-	public String getTextMessage(String code, List<Object> values) {
+	public   String getTextMessage(String code, List<Object> values) {
 		MessageSourceResolvable dmsgr = new DefaultMessageSourceResolvable(new String[] { code },
 				values.toArray(new Object[values.size()]));
 		return messageSource.getMessage(dmsgr, Locale.getDefault());
 	}
-
-	/**
-	 * @param messageSource
-	 */
-	public void setMessageSource(MessageSource messageSource) {
-		this.messageSource = messageSource;
+	
+	public  String getRGBForBaseColor(String basicColor)
+	{
+		return Optional.ofNullable(colorRGBMap.get(basicColor.toUpperCase()))
+				.orElse(ApplicationConstant.BLANK);
 	}
+
 }

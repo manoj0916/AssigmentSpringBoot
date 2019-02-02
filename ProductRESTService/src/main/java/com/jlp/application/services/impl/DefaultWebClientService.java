@@ -3,7 +3,7 @@ package com.jlp.application.services.impl;
 import java.time.Duration;
 import org.jboss.logging.Logger;
 
-import com.jlp.application.dto.ProductInfoDTO;
+import com.jlp.application.model.Products;
 import com.jlp.application.services.ProductsAPIInterface;
 import com.jlp.application.services.WebClientService;
 
@@ -59,7 +59,7 @@ public class DefaultWebClientService implements WebClientService {
 	 * 
 	 */
 	@Override
-	public ProductInfoDTO getProductListForCategory(String categoryId) {
+	public Products getProductListForCategory(String categoryId) {
 		try {
 			Retrofit retrofit = new Retrofit.Builder().baseUrl(apiBaseURL).client(okHttpClient)
 					.addConverterFactory(GsonConverterFactory.create()).build();
@@ -68,7 +68,7 @@ public class DefaultWebClientService implements WebClientService {
 
 		} catch (Exception e) {
 			log.error("Error while fething product list for category::::", e);
-			return new ProductInfoDTO();
+			return new Products();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.jlp.application.webservices;
+package com.jlp.application.cotroller;
 
 import javax.annotation.Resource;
 
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jlp.application.data.Products;
-import com.jlp.application.facade.ProductInfoFacade;
+import com.jlp.application.model.Products;
+import com.jlp.application.services.ProductInfoService;
 
 /**
  * @author Manoj
@@ -20,14 +20,14 @@ import com.jlp.application.facade.ProductInfoFacade;
 @RestController
 public class ProductInfoRESTService {
 	
-	@Resource(name="productInfoFacade")
-	ProductInfoFacade productInfoFacade;
+	@Resource(name="productInfoService")
+	ProductInfoService productInfoService;
 	
     @RequestMapping("/**/categories/{categoryId}/productsWithReducedPrice")
     public Products getProducts(@PathVariable String categoryId,
     		@RequestParam(value="labelType", defaultValue="ShowWasNow") String labelType) {
     	
-        return productInfoFacade.getReducedPriceProductsByCategory(categoryId, labelType);
+        return productInfoService.getSortedPriceReducedProductsByCategory(categoryId, labelType);
     }
 
 }

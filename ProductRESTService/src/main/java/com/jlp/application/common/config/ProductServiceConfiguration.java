@@ -1,4 +1,4 @@
-package com.jlp.application.config;
+package com.jlp.application.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;

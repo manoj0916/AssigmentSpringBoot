@@ -1,13 +1,19 @@
 package com.jlp.application.services.impl;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
 
 import org.jboss.logging.Logger;
 import org.springframework.util.StringUtils;
 
+import com.jlp.application.common.util.ApplicationConstant;
 import com.jlp.application.common.util.ProductServiceUtil;
+import com.jlp.application.model.ColorSwatche;
 import com.jlp.application.model.Product;
 import com.jlp.application.model.Products;
 import com.jlp.application.services.ProductInfoService;
@@ -23,8 +29,9 @@ public class DefaultProductInfoService implements ProductInfoService {
 
 	private Logger log = Logger.getLogger(DefaultProductInfoService.class);
 
+	@Resource(name="webClientService")
 	private WebClientService webClientService;
-
+	@Resource(name="productServiceUtil")
 	private ProductServiceUtil productServiceUtil;
 
 	/*
@@ -41,20 +48,22 @@ public class DefaultProductInfoService implements ProductInfoService {
 
 		log.debug(":::::::::::::::Inside getProductsByCategory :::::::::::::::::(" + categoryId + ")");
 
-		Products productDTOs = this.getProductsByCategory(categoryId);
+		Products products = this.getProductsByCategory(categoryId);
 		// Filter products with reduced price.
-		List<Product> fileredproductDTOs = productDTOs.getProducts().stream().filter(productdto -> reductionFilter(productdto,labelType))
+		List<Product> fileredproductDTOs = products.getProducts().stream().filter(productdto -> reductionFilter(productdto))
 				.collect(Collectors.toList());
 
 		log.debug("::::::::::::::: Populate filterd " + fileredproductDTOs.size() + " products out of "
-				+ productDTOs.getProducts().size() + " products :::::::::::::::");
+				+ products.getProducts().size() + " products :::::::::::::::");
 		// Sort products with highest reduced price.
 		Collections.sort(fileredproductDTOs,
 				(productDTO0, productDTO1) -> comparePriceReduction(productDTO0, productDTO1));
 		
-		productDTOs.setProducts(fileredproductDTOs);
+		products.setProducts(fileredproductDTOs);
+		
+		populateProductAdditinalInfo(products,labelType);
 
-		return productDTOs;
+		return products;
 	}
 	
 	/* (non-Javadoc)
@@ -68,9 +77,7 @@ public class DefaultProductInfoService implements ProductInfoService {
 		return webClientService.getProductListForCategory(categoryId);
 	}
 
-	private boolean reductionFilter(Product productdto,String labelType) {
-		productdto.setLabelType(labelType);
-		productdto.setProductServiceUtil(productServiceUtil);
+	private boolean reductionFilter(Product productdto) {
 		return (productdto.getPrice() != null && !StringUtils.isEmpty(productdto.getPrice().getWas())
 				&& !StringUtils.isEmpty(productdto.getPrice().getNow()));
 	}
@@ -80,14 +87,47 @@ public class DefaultProductInfoService implements ProductInfoService {
 				.compareTo(productServiceUtil.subtractValues(productDTO0.getPrice().getWas(),
 						productDTO0.getPrice().getNow()));
 	}
-
-	public void setWebClientService(WebClientService webClientService) {
-		this.webClientService = webClientService;
+	
+	private void populateProductAdditinalInfo(Products products, String labelType)
+	{
+		products.getProducts().forEach(product -> {
+			
+			product.setNowPrice(productServiceUtil.getPriceWithCurrency(product.getPrice().getNow(), product.getPrice().getCurrency()));
+			product.setPriceLabel(getPriceLabel(product,labelType));
+			setRGBHexaCode(product.getColorSwatches());
+		
+		});
 	}
+	private String getPriceLabel(Product product, String labelType)
+	{
+		List<Object> priceList = new LinkedList<>();
 
-	public void setProductServiceUtil(ProductServiceUtil productServiceUtil) {
-		this.productServiceUtil = productServiceUtil;
+		String messageLabelCode = ApplicationConstant.SHOWWASNOWMESSAGELABEL;
+
+		if (ApplicationConstant.SHWOPERCENTDISCLABEL.equals(labelType)) {
+			priceList.add(productServiceUtil
+					.getPercentValue(productServiceUtil.calculatePercent(product.getPrice().getWas(), product.getPrice().getNow())));
+			messageLabelCode = ApplicationConstant.SHWOPERCENTDISCMESSAGELABEL;
+		} else if (ApplicationConstant.SHOWWASTHENLABEL.equals(labelType)
+				&& (!StringUtils.isEmpty(product.getPrice().getThen1()) || !StringUtils.isEmpty(product.getPrice().getThen2()))) {
+			priceList.add(productServiceUtil.getPriceWithCurrency(product.getPrice().getWas(), product.getPrice().getCurrency()));
+			priceList.add(productServiceUtil.getPriceWithCurrency(
+					StringUtils.isEmpty(product.getPrice().getThen1()) ? product.getPrice().getThen2() : product.getPrice().getThen1(),
+							product.getPrice().getCurrency()));
+			messageLabelCode = ApplicationConstant.SHOWWASTHENMESSAGELABEL;
+		} else {
+			priceList.add(productServiceUtil.getPriceWithCurrency(product.getPrice().getWas(), product.getPrice().getCurrency()));
+		}
+
+		priceList.add(product.getNowPrice());
+		
+		return productServiceUtil.getTextMessage(messageLabelCode, priceList);
 	}
-
+	
+	private void setRGBHexaCode(List< ColorSwatche > colorSwatches)
+	{
+		colorSwatches.forEach(cs -> cs.setRgbColor(Optional.ofNullable(productServiceUtil.getRGBForBaseColor(cs.getBasicColor().toUpperCase()))
+				.orElse(ApplicationConstant.BLANK)));
+	}
 
 }

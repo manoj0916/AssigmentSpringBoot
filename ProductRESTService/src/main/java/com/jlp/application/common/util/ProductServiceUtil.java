@@ -7,6 +7,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,8 +22,9 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
  */
 public class ProductServiceUtil {
 
+	@Resource(name="messageSource")
 	private MessageSource messageSource;
-	
+	@Value("#{${skiu.color.colorRGBMap.map}}")
 	private Map<String, String> colorRGBMap;
 	
 	/**
@@ -114,13 +118,4 @@ public class ProductServiceUtil {
 				.orElse(ApplicationConstant.BLANK);
 	}
 	
-	public void setColorRGBMap(Map<String, String> colorRGBMap) {
-		this.colorRGBMap = colorRGBMap;
-	}
-
-
-	public void setMessageSource(MessageSource messageSource) {
-		this.messageSource = messageSource;
-	}
-
 }

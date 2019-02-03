@@ -1,7 +1,9 @@
 package com.jlp.application.services.impl;
 
 import java.time.Duration;
+
 import org.jboss.logging.Logger;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.jlp.application.model.Products;
 import com.jlp.application.services.ProductsAPIInterface;
@@ -21,19 +23,11 @@ public class DefaultWebClientService implements WebClientService {
 
 	private Logger log = Logger.getLogger(DefaultWebClientService.class);
 
+	@Value("${products.category.source.api.base.url}")
 	private String apiBaseURL;
-
+	@Value("${products.category.api.key.value}")
 	private String key;
-
 	private OkHttpClient okHttpClient;
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public void setApiBaseURL(String apiBaseURL) {
-		this.apiBaseURL = apiBaseURL;
-	}
 
 	/**
 	 * @param okHttpClient

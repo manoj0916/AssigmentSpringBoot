@@ -3,7 +3,7 @@ package com.jlp.application.model;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.jlp.application.common.util.ApplicationConstant;
+import com.jlp.application.common.ApplicationConstant;
 
 import lombok.Data;
 

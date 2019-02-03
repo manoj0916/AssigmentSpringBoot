@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import org.jboss.logging.Logger;
 import org.springframework.util.StringUtils;
 
-import com.jlp.application.common.util.ApplicationConstant;
+import com.jlp.application.common.ApplicationConstant;
 import com.jlp.application.common.util.ProductServiceUtil;
 import com.jlp.application.model.ColorSwatche;
 import com.jlp.application.model.Product;

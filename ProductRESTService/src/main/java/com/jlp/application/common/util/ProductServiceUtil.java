@@ -14,6 +14,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 
+import com.jlp.application.common.ApplicationConstant;
+
 /**
  * @author Manoj
  * 

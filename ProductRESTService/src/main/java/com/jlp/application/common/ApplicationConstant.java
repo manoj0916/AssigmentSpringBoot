@@ -1,4 +1,4 @@
-package com.jlp.application.common.util;
+package com.jlp.application.common;
 
 /**
  * @author Manoj

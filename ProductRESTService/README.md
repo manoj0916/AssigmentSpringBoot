@@ -16,7 +16,7 @@ Get formatted list of discounted products under a Category sorted as "highest pr
  			
 ## Control flow
 
-	Request <-> ProductInfoRESTService  <-> ProductInfoService <-> Service call via OkHttp3 (Retrofit)
+	Request <-> ProductInfoRESTService  <-> ProductInfoService <-> Web Service call via OkHttp3 (Retrofit)
 						
 
 ## For Creating Eclipse (with Spring tool Suite 3 plugin) OR Spring tool Suite (STS) IDE project

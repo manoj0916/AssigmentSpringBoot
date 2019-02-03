@@ -5,6 +5,7 @@ import java.time.Duration;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.jlp.application.common.exception.FetchResultException;
 import com.jlp.application.model.Products;
 import com.jlp.application.services.ProductsAPIInterface;
 import com.jlp.application.services.WebClientService;
@@ -65,8 +66,7 @@ public class DefaultWebClientService implements WebClientService {
 
 		} catch (Exception e) {
 			log.error("Error while fething product list for category::::", e);
-			return new Products();
+			throw new FetchResultException(e, "There is a "+e.getMessage()+", due to "+e.getCause());
 		}
 	}
-
 }

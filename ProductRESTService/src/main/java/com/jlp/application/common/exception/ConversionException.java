@@ -17,4 +17,9 @@ public class ConversionException extends RuntimeException {
 	{
 		super(e);
 	}
+	
+	public ConversionException(Exception e, String value)
+	{
+		super(new ConversionException(value));
+	}
 }

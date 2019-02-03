@@ -12,6 +12,8 @@ import org.jboss.logging.Logger;
 import org.springframework.util.StringUtils;
 
 import com.jlp.application.common.ApplicationConstant;
+import com.jlp.application.common.exception.ConversionException;
+import com.jlp.application.common.exception.FetchResultException;
 import com.jlp.application.common.util.ProductServiceUtil;
 import com.jlp.application.model.ColorSwatche;
 import com.jlp.application.model.Product;
@@ -45,6 +47,8 @@ public class DefaultProductInfoService implements ProductInfoService {
 	 */
 	@Override
 	public Products getSortedPriceReducedProductsByCategory(String categoryId,String labelType) {
+		
+		try {
 
 		log.debug(":::::::::::::::Inside getProductsByCategory :::::::::::::::::(" + categoryId + ")");
 
@@ -62,8 +66,16 @@ public class DefaultProductInfoService implements ProductInfoService {
 		products.setProducts(fileredproductDTOs);
 		
 		populateProductAdditinalInfo(products,labelType);
-
+		
 		return products;
+		}catch(FetchResultException fr)
+		{
+			throw fr;
+		}
+		catch(Exception e)
+		{
+			throw new ConversionException(e, "There is a "+e.getMessage()+", due to "+e.getCause());
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -88,16 +100,26 @@ public class DefaultProductInfoService implements ProductInfoService {
 						productDTO0.getPrice().getNow()));
 	}
 	
+	/**
+	 * Populate all other information to product not directly coming from source.
+	 * @param products
+	 * @param labelType
+	 */
 	private void populateProductAdditinalInfo(Products products, String labelType)
 	{
 		products.getProducts().forEach(product -> {
-			
 			product.setNowPrice(productServiceUtil.getPriceWithCurrency(product.getPrice().getNow(), product.getPrice().getCurrency()));
 			product.setPriceLabel(getPriceLabel(product,labelType));
 			setRGBHexaCode(product.getColorSwatches());
 		
 		});
 	}
+	/**
+	 * Populate price label for the target as per passed params when requested.
+	 * @param product
+	 * @param labelType
+	 * @return
+	 */
 	private String getPriceLabel(Product product, String labelType)
 	{
 		List<Object> priceList = new LinkedList<>();
@@ -124,6 +146,10 @@ public class DefaultProductInfoService implements ProductInfoService {
 		return productServiceUtil.getTextMessage(messageLabelCode, priceList);
 	}
 	
+	/**
+	 * Return Hexa code for RGB from a mapping.
+	 * @param colorSwatches
+	 */
 	private void setRGBHexaCode(List< ColorSwatche > colorSwatches)
 	{
 		colorSwatches.forEach(cs -> cs.setRgbColor(Optional.ofNullable(productServiceUtil.getRGBForBaseColor(cs.getBasicColor().toUpperCase()))

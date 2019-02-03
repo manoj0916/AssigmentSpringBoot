@@ -1,5 +1,9 @@
 package com.jlp.application.common.exception;
 
+/**
+ * @author Manoj
+ *
+ */
 public class FetchResultException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

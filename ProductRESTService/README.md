@@ -12,21 +12,16 @@ Get formatted list of discounted products under a Category sorted as "highest pr
 	View Layer (REST call in this case)
 		|
 		V
-	Facade Layer (Facade classes to make sure abstract function available for omni channels & re-usability) <-> convertor/populator (Generic populator to populate final data model from DTO)
-		|
-		V
 	Service Layer (Provide facilitation the concept of re-usability of service across enterprise)
  			
 ## Control flow
 
-	Request <-> ProductInfoRESTService <-> ProductInfoFacade <-> ProductInfoService <-> Service call via OkHttp3 (Retrofit)
-							|(called from Facade Layer)
-							V
-					ProductInfoPopulator (via generic convertor)
+	Request <-> ProductInfoRESTService  <-> ProductInfoService <-> Service call via OkHttp3 (Retrofit)
+						
 
 ## For Creating Eclipse (with Spring tool Suite 3 plugin) OR Spring tool Suite (STS) IDE project
 
-* Download project from GitHub https://github.com/manoj0916/AssigmentSpringBoot/tree/master/ProductRESTService
+* Download project from GitHub https://github.com/manoj0916/AssigmentSpringBoot/tree/ProductRESTSpringBoot/ProductRESTService
 * Open eclipse
 * Using `Import > General > Existing project to workspace` (or from the welcome screen, use `Import Project`). OR
 
@@ -63,14 +58,14 @@ INFO 19224 --- [           main] c.j.application.BootProductRESTService   : Star
 #### Check functinality working
 Application output can be seen in browser by hitting the URL with category Id and label type(optional)
 
-    Endpoint: http://localhost:8080/v1/categories/{categoryId}/productsWithReducedPrice?labelType={labelType}
+    Endpoint: http://localhost:8080/categories/{categoryId}/productsWithReducedPrice?labelType={labelType}
    
     Example: 
     
-      - http://localhost:8080/v1/categories/600001506/productsWithReducedPrice
-      - http://localhost:8080/v1/categories/600001506/productsWithReducedPrice?labelType=ShowWasNow
-      - http://localhost:8080/v1/categories/600001506/productsWithReducedPrice?labelType=ShowWasThenNow
-      - http://localhost:8080/v1/categories/600001506/productsWithReducedPrice?labelType=ShowPercDiscount
+      - http://localhost:8080/categories/600001506/productsWithReducedPrice
+      - http://localhost:8080/categories/600001506/productsWithReducedPrice?labelType=ShowWasNow
+      - http://localhost:8080/categories/600001506/productsWithReducedPrice?labelType=ShowWasThenNow
+      - http://localhost:8080/categories/600001506/productsWithReducedPrice?labelType=ShowPercDiscount
  
 Formatted JSON response of products with reduced price under that category or Respective Error messages should get displayed on the browser. Price label formatting is according to the allowed labelType passed as URL parameter (default is - Show Was £x.xx, Now £y.yy). 
  

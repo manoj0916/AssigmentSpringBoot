@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.jlp.application.common.exception.ConversionException;
 import com.jlp.application.common.exception.FetchResultException;
+import com.jlp.application.model.ProductServiceError;
 /**
  * @author Manoj
  *
@@ -22,8 +23,9 @@ public class ProductRestResponseEntityExceptionHandler extends ResponseEntityExc
 		      = { FetchResultException.class, ConversionException.class })
 		    protected ResponseEntity<Object> handleConflict(
 		      RuntimeException ex, WebRequest request) {
-		        String bodyOfResponse = "{\"error\":{\"errorString\":\""+ex.getMessage()+"\"}}";
-		        return handleExceptionInternal(ex, bodyOfResponse, 
+		        ProductServiceError error= new ProductServiceError();
+		        error.setErrorString(ex.getMessage());
+		        return handleExceptionInternal(ex, error, 
 		          new HttpHeaders(), HttpStatus.CONFLICT, request);
 		    }
 

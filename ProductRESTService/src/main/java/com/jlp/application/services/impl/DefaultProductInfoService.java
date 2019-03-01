@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.jboss.logging.Logger;
 import org.springframework.util.StringUtils;
 
 import com.jlp.application.common.ApplicationConstant;
@@ -29,18 +28,12 @@ import com.jlp.application.services.WebClientService;
  */
 public class DefaultProductInfoService implements ProductInfoService {
 
-	private Logger log = Logger.getLogger(DefaultProductInfoService.class);
-
 	@Resource(name="webClientService")
 	private WebClientService webClientService;
 	@Resource(name="productServiceUtil")
 	private ProductServiceUtil productServiceUtil;
 
-	/*
-	 * 
-	 * @see com.jlp.application.services.ProductInfoService#
-	 * getSortedPriceReducedProductsByCategory(java.lang.String)
-	 * 
+	/**
 	 * This method returns sorted product list for those price reduced in highest
 	 * reduced as first element.
 	 * 
@@ -50,15 +43,11 @@ public class DefaultProductInfoService implements ProductInfoService {
 		
 		try {
 
-		log.debug(":::::::::::::::Inside getProductsByCategory :::::::::::::::::(" + categoryId + ")");
-
 		Products products = this.getProductsByCategory(categoryId);
 		// Filter products with reduced price.
 		List<Product> fileredproductDTOs = products.getProducts().stream().filter(productdto -> reductionFilter(productdto))
 				.collect(Collectors.toList());
 
-		log.debug("::::::::::::::: Populate filterd " + fileredproductDTOs.size() + " products out of "
-				+ products.getProducts().size() + " products :::::::::::::::");
 		// Sort products with highest reduced price.
 		Collections.sort(fileredproductDTOs,
 				(productDTO0, productDTO1) -> comparePriceReduction(productDTO0, productDTO1));
@@ -78,9 +67,7 @@ public class DefaultProductInfoService implements ProductInfoService {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.jlp.application.services.ProductInfoService#getProductsByCategory(java.lang.String)
-	 * 
+	/**
 	 * This method returns product list for the specified category.
 	 * 
 	 */
@@ -91,7 +78,8 @@ public class DefaultProductInfoService implements ProductInfoService {
 
 	private boolean reductionFilter(Product productdto) {
 		return (productdto.getPrice() != null && !StringUtils.isEmpty(productdto.getPrice().getWas())
-				&& !StringUtils.isEmpty(productdto.getPrice().getNow()));
+				&& !StringUtils.isEmpty(productdto.getPrice().getNow()) 
+				&& productServiceUtil.subtractValues(productdto.getPrice().getWas(), productdto.getPrice().getNow())>0);
 	}
 
 	private int comparePriceReduction(Product productDTO0, Product productDTO1) {

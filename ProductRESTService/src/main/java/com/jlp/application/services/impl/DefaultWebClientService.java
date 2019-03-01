@@ -2,7 +2,8 @@ package com.jlp.application.services.impl;
 
 import java.time.Duration;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.jlp.application.common.exception.FetchResultException;
@@ -22,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class DefaultWebClientService implements WebClientService {
 
-	private Logger log = Logger.getLogger(DefaultWebClientService.class);
+	private Logger log = LoggerFactory.getLogger(DefaultWebClientService.class);
 
 	@Value("${products.category.source.api.base.url}")
 	private String apiBaseURL;

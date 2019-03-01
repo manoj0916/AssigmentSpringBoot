@@ -68,4 +68,3 @@ Application output can be seen in browser by hitting the URL with category Id an
       - http://localhost:8080/categories/600001506/productsWithReducedPrice?labelType=ShowPercDiscount
  
 Formatted JSON response of products with reduced price under that category or Respective Error messages should get displayed on the browser. Price label formatting is according to the allowed labelType passed as URL parameter (default is - Show Was £x.xx, Now £y.yy). 
- 

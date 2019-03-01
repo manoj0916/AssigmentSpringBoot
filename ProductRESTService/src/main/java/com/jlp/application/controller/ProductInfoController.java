@@ -18,7 +18,7 @@ import com.jlp.application.services.ProductInfoService;
  */
 
 @RestController
-public class ProductInfoRESTService {
+public class ProductInfoController {
 	
 	@Resource(name="productInfoService")
 	ProductInfoService productInfoService;

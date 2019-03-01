@@ -11,8 +11,8 @@ import javax.annotation.Resource;
 import org.springframework.util.StringUtils;
 
 import com.jlp.application.common.ApplicationConstant;
-import com.jlp.application.common.exception.ConversionException;
 import com.jlp.application.common.exception.FetchResultException;
+import com.jlp.application.common.exception.RecordProcessException;
 import com.jlp.application.common.util.ProductServiceUtil;
 import com.jlp.application.model.ColorSwatche;
 import com.jlp.application.model.Product;
@@ -63,7 +63,7 @@ public class DefaultProductInfoService implements ProductInfoService {
 		}
 		catch(Exception e)
 		{
-			throw new ConversionException(e, "There is a "+e.getMessage()+", due to "+e.getCause());
+			throw new RecordProcessException(e, "There is a "+e.getMessage()+", due to "+e.getCause());
 		}
 	}
 	

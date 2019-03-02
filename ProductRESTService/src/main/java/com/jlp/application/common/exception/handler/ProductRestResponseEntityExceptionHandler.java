@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.jlp.application.common.exception.ConversionException;
 import com.jlp.application.common.exception.FetchResultException;
+import com.jlp.application.common.exception.RecordProcessException;
 import com.jlp.application.model.ProductServiceError;
 /**
  * @author Manoj
@@ -20,7 +20,7 @@ import com.jlp.application.model.ProductServiceError;
 public class ProductRestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler(value 
-		      = { FetchResultException.class, ConversionException.class })
+		      = { FetchResultException.class, RecordProcessException.class })
 		    protected ResponseEntity<Object> handleConflict(
 		      RuntimeException ex, WebRequest request) {
 		        ProductServiceError error= new ProductServiceError();

@@ -20,7 +20,7 @@ import com.jlp.application.model.ProductServiceError;
 public class ProductRestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler(value 
-		      = { FetchResultException.class, RecordProcessException.class })
+		      = { FetchResultException.class, RecordProcessException.class, Exception.class})
 		    protected ResponseEntity<Object> handleConflict(
 		      RuntimeException ex, WebRequest request) {
 		        ProductServiceError error= new ProductServiceError();
